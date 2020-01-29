@@ -1,7 +1,8 @@
-package com.epam.lab.repository;
+package com.epam.lab.repository.impl;
 
 import com.epam.lab.configuration.DataSource;
 import com.epam.lab.exception.DAOException;
+import com.epam.lab.repository.GenericDAO;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

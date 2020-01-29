@@ -1,29 +1,22 @@
 package com.epam.lab.configuration;
 
-import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
-@Configuration
-@EnableWebMvc
-public class WebAppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
+class WebAppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
+
     @Override
     protected Class<?>[] getRootConfigClasses() {
-        return new Class[]{
-                WebAppInitializer.class
-        };
+        return new Class[]{RootConfig.class};
     }
 
     @Override
     protected Class<?>[] getServletConfigClasses() {
-        return null;
+        return new Class[]{WebConfig.class};
     }
 
     @Override
     protected String[] getServletMappings() {
-        System.out.println("WTFFFFFFFFFFFFFFFFFFFFFFFFF");
-        return new String[]{
-                "/*"
-        };
+        return new String[]{"/"};
     }
+
 }

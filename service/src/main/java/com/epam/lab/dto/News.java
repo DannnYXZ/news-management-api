@@ -1,6 +1,7 @@
 package com.epam.lab.dto;
 
 import java.util.Date;
+import java.util.List;
 
 public class News {
     private long id;
@@ -9,4 +10,5 @@ public class News {
     private String fullText;
     private Date creationDate;
     private Date modificationDate;
+    private List<Tag> tags;
 }
