@@ -1,29 +1,26 @@
 package com.epam.lab.controller;
 
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/news/{newsId}")
+@RequestMapping("/news/{newsId}/author")
 public class AuthorController {
-    @RequestMapping(value = "/author", method = RequestMethod.POST)
+    @PostMapping
     public String createAuthor(@PathVariable("newsId") Long newsId) {
         return "{OK}";
     }
 
-    @RequestMapping(value = "/author", method = RequestMethod.GET)
+    @GetMapping
     public String readAuthor(@PathVariable("newsId") Long newsId) {
         return "{news}";
     }
 
-    @RequestMapping(value = "/author", method = RequestMethod.PUT)
+    @PutMapping
     public String updateAuthor(@PathVariable("newsId") Long newsId) {
         return "{news}";
     }
 
-    @RequestMapping(value = "/author", method = RequestMethod.POST)
+    @DeleteMapping
     public String deleteAuthor(@PathVariable("newsId") Long newsId) {
         return "{OK}";
     }

@@ -1,38 +1,36 @@
 package com.epam.lab.controller;
 
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import com.epam.lab.dto.SearchCriteria;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class NewsController {
-    @RequestMapping(value = "/news", method = RequestMethod.POST)
+    @PostMapping(value = "/news")
     public String createNews() {
         return "{OK}";
     }
 
-//    @RequestMapping(value = "/news", method = RequestMethod.GET)
-//    public String readAllNews(@PathVariable("id") SearchCriteria id) {
-//        return "{news}";
-//    }
-
-    @RequestMapping(value = "/news/{id}", method = RequestMethod.GET)
-    public String readNews(@PathVariable("id") Long id) {
+    @GetMapping(value = "/news")
+    public String readAllNews(@RequestBody SearchCriteria criteria) {
         return "{news}";
     }
 
-    @RequestMapping(value = "/news/{id}", method = RequestMethod.PUT)
-    public String updateNews() {
+    @GetMapping(value = "/news/{newsId}")
+    public String readNews(@PathVariable("newsId") Long newsId) {
         return "{news}";
     }
 
-    @RequestMapping(value = "/news/{id}", method = RequestMethod.DELETE)
-    public String deleteNews(@PathVariable("id") Long id) {
+    @PutMapping(value = "/news/{newsId}")
+    public String updateNews(@PathVariable("newsId") Long newsId) {
+        return "{news}";
+    }
+
+    @DeleteMapping(value = "/news/{newsId}")
+    public String deleteNews(@PathVariable("newsId") Long newsId) {
         return "{OK}";
     }
 
-    @RequestMapping(value = "/news/count", method = RequestMethod.GET)
+    @GetMapping(value = "/news/count")
     public int countNews() {
         return 4;
     }

@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/news/{newsId}")
 public class TagController {
-    @GetMapping(value = "/tags")
+    @PostMapping(value = "/tags")
     public String createTags() {
         return "{OK}";
     }
@@ -27,10 +27,9 @@ public class TagController {
         return "{news}";
     }
 
-    @PostMapping(value = "/tags/{tagId}")
-    public String deleteNews(@PathVariable("newsId") Long newsId,
-                             @PathVariable("tagId") Long id) {
+    @DeleteMapping(value = "/tags/{tagId}")
+    public String deleteTag(@PathVariable("newsId") Long newsId,
+                             @PathVariable("tagId") Long tagId) {
         return "{OK}";
     }
-
 }
