@@ -4,7 +4,6 @@ import com.epam.lab.dto.Author;
 import com.epam.lab.dto.News;
 import com.epam.lab.dto.SearchCriteria;
 import com.epam.lab.dto.Tag;
-import com.epam.lab.repository.impl.TransactionManager;
 import com.epam.lab.service.NewsService;
 
 import java.util.List;
@@ -26,8 +25,6 @@ public class NewsServiceImpl implements NewsService {
     }
 
     public News create(News element) {
-        TransactionManager transaction = new TransactionManager();
-
         return null;
     }
 
