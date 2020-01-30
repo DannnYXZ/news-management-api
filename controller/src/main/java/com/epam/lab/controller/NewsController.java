@@ -1,13 +1,22 @@
 package com.epam.lab.controller;
 
+import com.epam.lab.dto.News;
 import com.epam.lab.dto.SearchCriteria;
+import com.epam.lab.service.NewsService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
 public class NewsController {
+
+    @Autowired
+    NewsService newsService;
+
     @PostMapping(value = "/news")
-    public String createNews() {
-        return "{OK}";
+    public News createNews(@RequestBody News news) {
+        return news;
     }
 
     @GetMapping(value = "/news")
