@@ -13,7 +13,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 @Component
-public class TagRepository implements EntityRepository<Tag> {
+public class TagRepositoryImpl implements EntityRepository<Tag> {
 
     private JdbcTemplate jdbcTemplate;
 
@@ -25,7 +25,7 @@ public class TagRepository implements EntityRepository<Tag> {
             "DELETE FROM tag WHERE id = ?";
 
     @Autowired
-    public TagRepository(JdbcTemplate jdbcTemplate) {
+    public TagRepositoryImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 

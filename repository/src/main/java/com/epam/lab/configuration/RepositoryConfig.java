@@ -1,5 +1,8 @@
 package com.epam.lab.configuration;
 
+import com.epam.lab.dto.News;
+import com.epam.lab.repository.EntityRepository;
+import com.epam.lab.repository.impl.NewsRepositoryImpl;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +13,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 @Configuration
-@PropertySource("classpath:database.properties")
+@PropertySource("classpath:datasource.properties")
 public class RepositoryConfig {
 
     @Autowired
@@ -31,10 +34,19 @@ public class RepositoryConfig {
     @Bean
     public HikariConfig getHikariConfig() {
         HikariConfig config = new HikariConfig();
-        //config.setJdbcUrl(environment.getProperty("url"));
+        config.setJdbcUrl(environment.getProperty("url"));
         config.setUsername(environment.getProperty("name"));
         config.setPassword(environment.getProperty("password"));
         return config;
     }
 
+    @Bean
+    EntityRepository<News> getNewsRepository() {
+        return new NewsRepositoryImpl(getJdbcTemplate());
+    }
+
+    @Bean
+    News getNews(){
+        return new News();
+    }
 }

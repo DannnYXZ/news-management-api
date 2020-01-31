@@ -1,11 +1,14 @@
 package com.epam.lab.controller;
 
+import com.epam.lab.dto.Author;
 import com.epam.lab.dto.News;
 import com.epam.lab.dto.SearchCriteria;
 import com.epam.lab.service.NewsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -16,31 +19,43 @@ public class NewsController {
 
     @PostMapping(value = "/news")
     public News createNews(@RequestBody News news) {
-        return news;
+        News createdNews = newsService.create(news);
+        return createdNews;
     }
 
     @GetMapping(value = "/news")
-    public String readAllNews(@RequestBody SearchCriteria criteria) {
-        return "{news}";
+    public List<News> readNews(@RequestBody SearchCriteria criteria) {
+        List<News> news = newsService.getNews(criteria);
+        return news;
     }
 
     @GetMapping(value = "/news/{newsId}")
-    public String readNews(@PathVariable("newsId") Long newsId) {
-        return "{news}";
+    public News readNews(@PathVariable("newsId") Long newsId) {
+        News news = newsService.read(new News().setId(newsId));
+        return news;
     }
 
     @PutMapping(value = "/news/{newsId}")
-    public String updateNews(@PathVariable("newsId") Long newsId) {
-        return "{news}";
+    public News updateNews(@PathVariable("newsId") Long newsId,
+                           @RequestBody News news) {
+        News updated = newsService.update(news.setId(newsId));
+        return updated;
     }
 
     @DeleteMapping(value = "/news/{newsId}")
-    public String deleteNews(@PathVariable("newsId") Long newsId) {
-        return "{OK}";
+    public void deleteNews(@PathVariable("newsId") Long newsId,
+                           @RequestBody News news) {
+        newsService.delete(news.setId(newsId));
     }
 
     @GetMapping(value = "/news/count")
     public int countNews() {
-        return 4;
+        return newsService.countNews();
+    }
+
+    @PostMapping(value = "/news/{newsId}/author")
+    public void addAuthor(@PathVariable("newsId") Long newsId,
+                          @RequestBody Author author) {
+        newsService.addAuthor(new News().setId(newsId), author);
     }
 }

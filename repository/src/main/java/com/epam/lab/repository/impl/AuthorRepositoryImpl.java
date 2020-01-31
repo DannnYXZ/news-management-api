@@ -13,7 +13,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 @Component
-public class AuthorRepository implements EntityRepository<Author> {
+public class AuthorRepositoryImpl implements EntityRepository<Author> {
 
     private JdbcTemplate jdbcTemplate;
 
@@ -25,7 +25,7 @@ public class AuthorRepository implements EntityRepository<Author> {
             "DELETE FROM author WHERE id = ?";
 
     @Autowired
-    public AuthorRepository(JdbcTemplate jdbcTemplate) {
+    public AuthorRepositoryImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 

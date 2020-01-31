@@ -13,7 +13,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 @Component
-public class UserRepository implements EntityRepository<User> {
+public class UserRepositoryImpl implements EntityRepository<User> {
 
     private JdbcTemplate jdbcTemplate;
 
@@ -25,7 +25,7 @@ public class UserRepository implements EntityRepository<User> {
             "DELETE FROM \"user\" WHERE id = ?";
 
     @Autowired
-    public UserRepository(JdbcTemplate jdbcTemplate) {
+    public UserRepositoryImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 

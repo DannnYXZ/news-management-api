@@ -8,7 +8,7 @@ import com.epam.lab.dto.Tag;
 import java.util.List;
 
 public interface NewsService extends CrudService<News> {
-    void addAuthor(Author author);
+    void addAuthor(News news, Author author);
     void addTags(List<Tag> tags);
     int countNews();
     List<News> getNews(SearchCriteria criteria);

@@ -9,7 +9,11 @@ import com.epam.lab.service.NewsService;
 import java.util.List;
 
 public class NewsServiceImpl implements NewsService {
-    public void addAuthor(Author author) {
+
+    //@Autowired
+    //EntityRepository<News> newsRepository;
+
+    public void addAuthor(News news, Author author) {
     }
 
     public void addTags(List<Tag> tags) {
@@ -25,6 +29,7 @@ public class NewsServiceImpl implements NewsService {
     }
 
     public News create(News element) {
+        //newsRepository.add(element);
         return null;
     }
 
@@ -32,8 +37,8 @@ public class NewsServiceImpl implements NewsService {
         return null;
     }
 
-    public void update(News element) {
-
+    public News update(News element) {
+        return null;
     }
 
     public void delete(News element) {

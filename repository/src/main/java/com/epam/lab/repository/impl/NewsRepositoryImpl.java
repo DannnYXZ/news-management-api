@@ -8,13 +8,12 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
-import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
 @Component
-public class NewsRepository implements EntityRepository<News> {
+public class NewsRepositoryImpl implements EntityRepository<News> {
 
     private JdbcTemplate jdbcTemplate;
 
@@ -26,7 +25,7 @@ public class NewsRepository implements EntityRepository<News> {
             "DELETE FROM news WHERE id = ?";
 
     @Autowired
-    public NewsRepository(JdbcTemplate jdbcTemplate) {
+    public NewsRepositoryImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
