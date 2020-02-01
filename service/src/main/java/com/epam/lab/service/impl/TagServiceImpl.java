@@ -12,8 +12,7 @@ public class TagServiceImpl implements TagService {
         return null;
     }
 
-    public Tag update(Tag element) {
-        return null;
+    public void update(Tag element) {
     }
 
     public void delete(Tag element) {

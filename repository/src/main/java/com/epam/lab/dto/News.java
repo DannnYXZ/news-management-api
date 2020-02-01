@@ -10,6 +10,7 @@ public class News {
     private String fullText;
     private Date creationDate;
     private Date modificationDate;
+    private Author author;
     private List<Tag> tags;
 
     public long getId() {
@@ -63,6 +64,15 @@ public class News {
 
     public News setModificationDate(Date modificationDate) {
         this.modificationDate = modificationDate;
+        return this;
+    }
+
+    public Author getAuthor() {
+        return author;
+    }
+
+    public News setAuthor(Author author) {
+        this.author = author;
         return this;
     }
 

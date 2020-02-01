@@ -19,13 +19,13 @@ public class NewsController {
 
     @PostMapping(value = "/news")
     public News createNews(@RequestBody News news) {
-        News createdNews = newsService.create(news);
-        return createdNews;
+        News identifiedNews = newsService.create(news);
+        return identifiedNews;
     }
 
     @GetMapping(value = "/news")
     public List<News> readNews(@RequestBody SearchCriteria criteria) {
-        List<News> news = newsService.getNews(criteria);
+        List<News> news = newsService.readNews(criteria);
         return news;
     }
 
@@ -36,10 +36,9 @@ public class NewsController {
     }
 
     @PutMapping(value = "/news/{newsId}")
-    public News updateNews(@PathVariable("newsId") Long newsId,
+    public void updateNews(@PathVariable("newsId") Long newsId,
                            @RequestBody News news) {
-        News updated = newsService.update(news.setId(newsId));
-        return updated;
+        newsService.update(news.setId(newsId));
     }
 
     @DeleteMapping(value = "/news/{newsId}")

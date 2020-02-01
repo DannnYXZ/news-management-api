@@ -1,8 +1,12 @@
 package com.epam.lab.configuration;
 
+import com.epam.lab.dto.Author;
 import com.epam.lab.dto.News;
+import com.epam.lab.dto.Tag;
 import com.epam.lab.repository.EntityRepository;
+import com.epam.lab.repository.impl.AuthorRepositoryImpl;
 import com.epam.lab.repository.impl.NewsRepositoryImpl;
+import com.epam.lab.repository.impl.TagRepositoryImpl;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.context.annotation.Bean;
@@ -31,7 +35,12 @@ public class RepositoryConfig {
     }
 
     @Bean
-    News getNews() {
-        return new News();
+    EntityRepository<Tag> getTagRepository() {
+        return new TagRepositoryImpl(getJdbcTemplate());
+    }
+
+    @Bean
+    EntityRepository<Author> getAuthorRepository() {
+        return new AuthorRepositoryImpl(getJdbcTemplate());
     }
 }

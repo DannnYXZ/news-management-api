@@ -6,10 +6,10 @@ import java.util.List;
 
 public interface EntityRepository<T> {
 
-    abstract void add(T entity);
-    abstract void update(T entity);
-    abstract void remove(T entity);
+    T save(T entity);
+    void update(T entity);
+    void remove(T entity);
 
-    abstract List<T> query(EntitySpecification specification);
+    List<T> query(EntitySpecification specification);
 
 }

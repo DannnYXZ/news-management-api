@@ -1,56 +1,63 @@
 package com.epam.lab.repository.impl;
 
+import com.epam.lab.dto.News;
 import com.epam.lab.dto.Tag;
 import com.epam.lab.repository.EntityRepository;
+import com.epam.lab.repository.Joinable;
 import com.epam.lab.specification.EntitySpecification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.stereotype.Component;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.PreparedStatement;
 import java.util.List;
 
-@Component
-public class TagRepositoryImpl implements EntityRepository<Tag> {
+public class TagRepositoryImpl implements EntityRepository<Tag>, Joinable<News, Tag> {
 
     private JdbcTemplate jdbcTemplate;
-
-    private static final String SQL_INSERT_NEWS =
-            "INSERT INTO tag (name) VALUES (?)";
-    private static final String SQL_UPDATE_NEWS =
-            "UPDATE tag SET name = ? WHERE id = ?";
-    private static final String SQL_REMOVE_NEWS =
-            "DELETE FROM tag WHERE id = ?";
+    private static final String SQL_INSERT_TAG = "INSERT INTO tag (name) VALUES (?)";
+    private static final String SQL_UPDATE_TAG = "UPDATE tag SET name = coalesce(?, name) WHERE id = ?";
+    private static final String SQL_REMOVE_TAG = "DELETE FROM tag WHERE id = ?";
+    private static final String SQL_INSERT_NEWS_TAG = "INSERT INTO news_tag (news_id, tag_id) VALUES (?, ?)";
 
     @Autowired
     public TagRepositoryImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public void add(Tag tag) {
-        jdbcTemplate.update(SQL_INSERT_NEWS, tag.getName());
+    public Tag save(Tag tag) {
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        jdbcTemplate.update(connection -> {
+            PreparedStatement ps = connection.prepareStatement(SQL_INSERT_TAG, new String[]{"id"});
+            ps.setString(1, tag.getName());
+            return ps;
+        }, keyHolder);
+        tag.setId(keyHolder.getKey().longValue());
+        return tag;
     }
 
+    @Override
     public void update(Tag tag) {
-        jdbcTemplate.update(SQL_UPDATE_NEWS, tag.getName(), tag.getId());
+        jdbcTemplate.update(SQL_UPDATE_TAG, tag.getName(), tag.getId());
     }
 
+    @Override
     public void remove(Tag tag) {
-        jdbcTemplate.update(SQL_REMOVE_NEWS, tag.getId());
+        jdbcTemplate.update(SQL_REMOVE_TAG, tag.getId());
     }
 
+    @Override
     public List<Tag> query(EntitySpecification specification) {
         List<Tag> tags = jdbcTemplate.query(specification.specified(),
-                new RowMapper<Tag>() {
-                    public Tag mapRow(ResultSet rs, int rowNum) throws SQLException {
-                        return new Tag()
-                                .setId(rs.getInt("id"))
-                                .setName(rs.getString("name"));
-                    }
-                });
+                (rs, rowNum) -> new Tag()
+                        .setId(rs.getInt("id"))
+                        .setName(rs.getString("name")));
         return tags;
     }
 
+    @Override
+    public void join(News news, Tag tag) {
+        jdbcTemplate.update(SQL_INSERT_NEWS_TAG, news.getId(), tag.getId());
+    }
 }

@@ -11,5 +11,5 @@ public interface NewsService extends CrudService<News> {
     void addAuthor(News news, Author author);
     void addTags(List<Tag> tags);
     int countNews();
-    List<News> getNews(SearchCriteria criteria);
+    List<News> readNews(SearchCriteria criteria);
 }

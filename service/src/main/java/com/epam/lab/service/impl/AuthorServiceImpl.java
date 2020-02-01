@@ -12,8 +12,7 @@ public class AuthorServiceImpl implements AuthorService {
         return null;
     }
 
-    public Author update(Author element) {
-        return null;
+    public void update(Author element) {
     }
 
     public void delete(Author element) {
