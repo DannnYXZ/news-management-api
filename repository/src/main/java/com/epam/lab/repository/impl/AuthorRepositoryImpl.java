@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.sql.PreparedStatement;
 import java.util.List;
@@ -29,7 +30,7 @@ public class AuthorRepositoryImpl implements EntityRepository<Author>, Joinable<
     }
 
     @Override
-    public Author save(Author author) {
+    public Author create(Author author) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement(SQL_INSERT_USER, new String[]{"id"});
@@ -47,8 +48,13 @@ public class AuthorRepositoryImpl implements EntityRepository<Author>, Joinable<
     }
 
     @Override
-    public void remove(Author author) {
+    public void delete(Author author) {
         jdbcTemplate.update(SQL_REMOVE_USER, author.getId());
+    }
+
+    @Override
+    public long count() {
+        throw new NotImplementedException();
     }
 
     @Override

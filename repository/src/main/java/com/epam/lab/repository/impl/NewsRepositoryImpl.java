@@ -32,6 +32,7 @@ public class NewsRepositoryImpl implements EntityRepository<News> {
             "creation_date = coalesce(?, creation_date), " +
             "modification_date = coalesce(?, modification_date) WHERE id = ?";
     private static final String SQL_REMOVE_NEWS = "DELETE FROM news WHERE id = ?";
+    private static final String SQL_COUNT_NEWS = "SELECT COUNT(*) FROM news";
 
     @Autowired
     public NewsRepositoryImpl(JdbcTemplate jdbcTemplate) {
@@ -39,7 +40,7 @@ public class NewsRepositoryImpl implements EntityRepository<News> {
     }
 
     @Override
-    public News save(News news) {
+    public News create(News news) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement(SQL_INSERT_NEWS, new String[]{"id"});
@@ -54,13 +55,13 @@ public class NewsRepositoryImpl implements EntityRepository<News> {
         List<Tag> tags = news.getTags();
         if (tags != null) {
             for (Tag tag : tags) {
-                Tag identifiedTag = tagRepository.save(tag);
+                Tag identifiedTag = tagRepository.create(tag);
                 ((Joinable<News, Tag>) tagRepository).join(news, identifiedTag);
             }
         }
         Author author = news.getAuthor();
         if (author != null) {
-            Author identifiedAuthor = authorRepository.save(author);
+            Author identifiedAuthor = authorRepository.create(author);
             ((Joinable<News, Author>) tagRepository).join(news, identifiedAuthor);
         }
         return news;
@@ -78,8 +79,16 @@ public class NewsRepositoryImpl implements EntityRepository<News> {
     }
 
     @Override
-    public void remove(News news) {
+    public void delete(News news) {
         jdbcTemplate.update(SQL_REMOVE_NEWS, news.getId());
+    }
+
+    @Override
+    public long count() {
+        return jdbcTemplate.query(SQL_COUNT_NEWS, resultSet -> {
+            resultSet.next();
+            return resultSet.getLong(1);
+        });
     }
 
     @Override

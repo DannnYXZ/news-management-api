@@ -6,10 +6,10 @@ import java.util.List;
 
 public interface EntityRepository<T> {
 
-    T save(T entity);
+    T create(T entity);
     void update(T entity);
-    void remove(T entity);
+    void delete(T entity);
+    long count();
 
     List<T> query(EntitySpecification specification);
-
 }

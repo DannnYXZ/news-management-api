@@ -5,6 +5,7 @@ import com.epam.lab.repository.EntityRepository;
 import com.epam.lab.specification.EntitySpecification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.List;
 
@@ -19,8 +20,7 @@ public class UserRepositoryImpl implements EntityRepository<User> {
                     "surname = coalesce(?, surname), " +
                     "login = coalesce(?, login), " +
                     "password = coalesce(?, password) WHERE id = ?";
-    private static final String SQL_REMOVE_USER =
-            "DELETE FROM \"user\" WHERE id = ?";
+    private static final String SQL_REMOVE_USER = "DELETE FROM \"user\" WHERE id = ?";
 
     @Autowired
     public UserRepositoryImpl(JdbcTemplate jdbcTemplate) {
@@ -28,7 +28,7 @@ public class UserRepositoryImpl implements EntityRepository<User> {
     }
 
     @Override
-    public User save(User user) {
+    public User create(User user) {
         jdbcTemplate.update(SQL_INSERT_USER, user.getName(), user.getSurname(), user.getLogin(), user.getPassword());
         return user;
     }
@@ -39,8 +39,13 @@ public class UserRepositoryImpl implements EntityRepository<User> {
     }
 
     @Override
-    public void remove(User user) {
+    public void delete(User user) {
         jdbcTemplate.update(SQL_REMOVE_USER, user.getId());
+    }
+
+    @Override
+    public long count() {
+        throw new NotImplementedException();
     }
 
     @Override

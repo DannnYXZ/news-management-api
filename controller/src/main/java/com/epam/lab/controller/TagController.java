@@ -18,23 +18,25 @@ public class TagController {
         return identifiedTag;
     }
 
-    @GetMapping(value = "/tags/{tagId}")
-    public Tag readTag(@PathVariable("tagId") Long tagId) {
-        return tagService.read(new Tag().setId(tagId));
+    @GetMapping(value = "/tags/{id}")
+    public Tag readTag(@PathVariable("id") Long id) {
+        return tagService.read(new Tag().setId(id));
     }
 
-    @PutMapping(value = "/tags/{tagId}")
-    public String updateTag(@PathVariable("tagId") Long tagId) {
-        return "{news}";
+    @PutMapping(value = "/tags/{id}")
+    public void updateTag(@PathVariable("id") Long id,
+                          @RequestBody Tag tag) {
+        tagService.update(tag.setId(id));
     }
 
-    @DeleteMapping(value = "/tags/{tagId}")
-    public void deleteTag(@PathVariable("tagId") Long tagId) {
-        tagService.delete(new Tag().setId(tagId));
+    @DeleteMapping(value = "/tags/{id}")
+    public void deleteTag(@PathVariable("id") Long id) {
+        tagService.delete(new Tag().setId(id));
     }
 
-    @GetMapping(value = "/news/{newsId}/tags")
-    public List<String> readNewsTags(@PathVariable("newsId") Long newsId) {
+    @GetMapping(value = "/news/{id}/tags")
+    public List<String> readNewsTags(@PathVariable("id") Long newsId) {
+        //return tagService.read();
         return null;
     }
 }

@@ -24,37 +24,36 @@ public class NewsController {
     }
 
     @GetMapping(value = "/news")
-    public List<News> readNews(@RequestBody SearchCriteria criteria) {
+    public List<News> readNews(@RequestBody SearchCriteria criteria) { // TODO: search criteria
         List<News> news = newsService.readNews(criteria);
         return news;
     }
 
-    @GetMapping(value = "/news/{newsId}")
-    public News readNews(@PathVariable("newsId") Long newsId) {
-        News news = newsService.read(new News().setId(newsId));
+    @GetMapping(value = "/news/{id}")
+    public News readNews(@PathVariable("id") Long id) {
+        News news = newsService.read(new News().setId(id));
         return news;
     }
 
-    @PutMapping(value = "/news/{newsId}")
-    public void updateNews(@PathVariable("newsId") Long newsId,
+    @PutMapping(value = "/news/{id}")
+    public void updateNews(@PathVariable("id") Long id,
                            @RequestBody News news) {
-        newsService.update(news.setId(newsId));
+        newsService.update(news.setId(id));
     }
 
-    @DeleteMapping(value = "/news/{newsId}")
-    public void deleteNews(@PathVariable("newsId") Long newsId,
-                           @RequestBody News news) {
-        newsService.delete(news.setId(newsId));
+    @DeleteMapping(value = "/news/{id}")
+    public void deleteNews(@PathVariable("id") Long id) {
+        newsService.delete(new News().setId(id));
     }
 
     @GetMapping(value = "/news/count")
-    public int countNews() {
+    public long countNews() {
         return newsService.countNews();
     }
 
-    @PostMapping(value = "/news/{newsId}/author")
-    public void addAuthor(@PathVariable("newsId") Long newsId,
+    @PostMapping(value = "/news/{id}/author")
+    public void addAuthor(@PathVariable("id") Long id,
                           @RequestBody Author author) {
-        newsService.addAuthor(new News().setId(newsId), author);
+        newsService.addAuthor(new News().setId(id), author);
     }
 }

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.sql.PreparedStatement;
 import java.util.List;
@@ -26,7 +27,7 @@ public class TagRepositoryImpl implements EntityRepository<Tag>, Joinable<News, 
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public Tag save(Tag tag) {
+    public Tag create(Tag tag) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement(SQL_INSERT_TAG, new String[]{"id"});
@@ -43,8 +44,13 @@ public class TagRepositoryImpl implements EntityRepository<Tag>, Joinable<News, 
     }
 
     @Override
-    public void remove(Tag tag) {
+    public void delete(Tag tag) {
         jdbcTemplate.update(SQL_REMOVE_TAG, tag.getId());
+    }
+
+    @Override
+    public long count() {
+        throw new NotImplementedException();
     }
 
     @Override
