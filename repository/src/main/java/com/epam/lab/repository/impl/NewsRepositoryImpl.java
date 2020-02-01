@@ -6,13 +6,14 @@ import com.epam.lab.specification.EntitySpecification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.stereotype.Component;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-@Component
 public class NewsRepositoryImpl implements EntityRepository<News> {
 
     private JdbcTemplate jdbcTemplate;
@@ -30,15 +31,22 @@ public class NewsRepositoryImpl implements EntityRepository<News> {
     }
 
     public void add(News news) {
-        jdbcTemplate.update(SQL_INSERT_NEWS, news.getTitle(),
-                news.getShortText(),
-                news.getFullText(),
-                news.getCreationDate(),
-                news.getModificationDate());
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        jdbcTemplate.update(connection -> {
+            PreparedStatement ps = connection.prepareStatement(SQL_INSERT_NEWS, new String[]{"id"});
+            ps.setString(1, news.getTitle());
+            ps.setString(2, news.getShortText());
+            ps.setString(3, news.getFullText());
+            ps.setDate(4, new java.sql.Date(news.getCreationDate().getTime()));
+            ps.setDate(5, new java.sql.Date(news.getModificationDate().getTime()));
+            return ps;
+        }, keyHolder);
+        news.setId(keyHolder.getKey().longValue());
     }
 
     public void update(News news) {
-        jdbcTemplate.update(SQL_UPDATE_NEWS, news.getTitle(),
+        jdbcTemplate.update(SQL_UPDATE_NEWS,
+                news.getTitle(),
                 news.getShortText(),
                 news.getFullText(),
                 news.getCreationDate(),

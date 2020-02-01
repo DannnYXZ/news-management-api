@@ -1,7 +1,5 @@
 package com.epam.lab.dto;
 
-import org.springframework.format.annotation.DateTimeFormat;
-
 import java.util.Date;
 import java.util.List;
 
@@ -10,9 +8,7 @@ public class News {
     private String title;
     private String shortText;
     private String fullText;
-    @DateTimeFormat(pattern = "dd-MM-yyyy")
     private Date creationDate;
-    @DateTimeFormat(pattern = "dd-MM-yyyy")
     private Date modificationDate;
     private List<Tag> tags;
 

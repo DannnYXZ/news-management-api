@@ -4,14 +4,16 @@ import com.epam.lab.dto.Author;
 import com.epam.lab.dto.News;
 import com.epam.lab.dto.SearchCriteria;
 import com.epam.lab.dto.Tag;
+import com.epam.lab.repository.EntityRepository;
 import com.epam.lab.service.NewsService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
 public class NewsServiceImpl implements NewsService {
 
-    //@Autowired
-    //EntityRepository<News> newsRepository;
+    @Autowired
+    private EntityRepository<News> newsRepository;
 
     public void addAuthor(News news, Author author) {
     }
@@ -29,8 +31,8 @@ public class NewsServiceImpl implements NewsService {
     }
 
     public News create(News element) {
-        //newsRepository.add(element);
-        return null;
+        newsRepository.add(element);
+        return element;
     }
 
     public News read(News element) {
