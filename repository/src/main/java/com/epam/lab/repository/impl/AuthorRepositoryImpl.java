@@ -1,9 +1,7 @@
 package com.epam.lab.repository.impl;
 
 import com.epam.lab.dto.Author;
-import com.epam.lab.dto.News;
 import com.epam.lab.repository.EntityRepository;
-import com.epam.lab.repository.Joinable;
 import com.epam.lab.specification.EntitySpecification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -14,7 +12,7 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import java.sql.PreparedStatement;
 import java.util.List;
 
-public class AuthorRepositoryImpl implements EntityRepository<Author>, Joinable<News, Author> {
+public class AuthorRepositoryImpl implements EntityRepository<Author> {
 
     private JdbcTemplate jdbcTemplate;
     private static final String SQL_INSERT_USER = "INSERT INTO author (name, surname) VALUES (?, ?)";
@@ -65,10 +63,5 @@ public class AuthorRepositoryImpl implements EntityRepository<Author>, Joinable<
                         .setName(rs.getString("name"))
                         .setSurname(rs.getString("surname")));
         return authors;
-    }
-
-    @Override
-    public void join(News news, Author author) {
-        jdbcTemplate.update(SQL_INSERT_NEWS_AUTHOR, news.getId(), author.getId());
     }
 }

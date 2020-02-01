@@ -1,9 +1,7 @@
 package com.epam.lab.repository.impl;
 
-import com.epam.lab.dto.News;
 import com.epam.lab.dto.Tag;
 import com.epam.lab.repository.EntityRepository;
-import com.epam.lab.repository.Joinable;
 import com.epam.lab.specification.EntitySpecification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -14,13 +12,12 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import java.sql.PreparedStatement;
 import java.util.List;
 
-public class TagRepositoryImpl implements EntityRepository<Tag>, Joinable<News, Tag> {
+public class TagRepositoryImpl implements EntityRepository<Tag> {
 
     private JdbcTemplate jdbcTemplate;
     private static final String SQL_INSERT_TAG = "INSERT INTO tag (name) VALUES (?)";
     private static final String SQL_UPDATE_TAG = "UPDATE tag SET name = coalesce(?, name) WHERE id = ?";
     private static final String SQL_REMOVE_TAG = "DELETE FROM tag WHERE id = ?";
-    private static final String SQL_INSERT_NEWS_TAG = "INSERT INTO news_tag (news_id, tag_id) VALUES (?, ?)";
 
     @Autowired
     public TagRepositoryImpl(JdbcTemplate jdbcTemplate) {
@@ -60,10 +57,5 @@ public class TagRepositoryImpl implements EntityRepository<Tag>, Joinable<News, 
                         .setId(rs.getInt("id"))
                         .setName(rs.getString("name")));
         return tags;
-    }
-
-    @Override
-    public void join(News news, Tag tag) {
-        jdbcTemplate.update(SQL_INSERT_NEWS_TAG, news.getId(), tag.getId());
     }
 }

@@ -4,7 +4,6 @@ import com.epam.lab.dto.Author;
 import com.epam.lab.dto.News;
 import com.epam.lab.dto.Tag;
 import com.epam.lab.repository.EntityRepository;
-import com.epam.lab.repository.Joinable;
 import com.epam.lab.specification.EntitySpecification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -33,6 +32,8 @@ public class NewsRepositoryImpl implements EntityRepository<News> {
             "modification_date = coalesce(?, modification_date) WHERE id = ?";
     private static final String SQL_REMOVE_NEWS = "DELETE FROM news WHERE id = ?";
     private static final String SQL_COUNT_NEWS = "SELECT COUNT(*) FROM news";
+    private static final String SQL_INSERT_NEWS_TAG = "INSERT INTO news_tag (news_id, tag_id) VALUES (?, ?)";
+    private static final String SQL_INSERT_NEWS_AUTHOR = "INSERT INTO news_author (news_id, author_id) VALUES (?, ?)";
 
     @Autowired
     public NewsRepositoryImpl(JdbcTemplate jdbcTemplate) {
@@ -56,13 +57,13 @@ public class NewsRepositoryImpl implements EntityRepository<News> {
         if (tags != null) {
             for (Tag tag : tags) {
                 Tag identifiedTag = tagRepository.create(tag);
-                ((Joinable<News, Tag>) tagRepository).join(news, identifiedTag);
+                jdbcTemplate.update(SQL_INSERT_NEWS_TAG, news.getId(), identifiedTag.getId());
             }
         }
         Author author = news.getAuthor();
         if (author != null) {
             Author identifiedAuthor = authorRepository.create(author);
-            ((Joinable<News, Author>) tagRepository).join(news, identifiedAuthor);
+            jdbcTemplate.update(SQL_INSERT_NEWS_AUTHOR, news.getId(), identifiedAuthor.getId());
         }
         return news;
     }
