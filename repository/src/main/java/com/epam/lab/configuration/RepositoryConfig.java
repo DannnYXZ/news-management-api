@@ -4,6 +4,7 @@ import com.epam.lab.dto.Author;
 import com.epam.lab.dto.News;
 import com.epam.lab.dto.Tag;
 import com.epam.lab.repository.EntityRepository;
+import com.epam.lab.repository.NewsRepository;
 import com.epam.lab.repository.impl.AuthorRepositoryImpl;
 import com.epam.lab.repository.impl.NewsRepositoryImpl;
 import com.epam.lab.repository.impl.TagRepositoryImpl;
@@ -30,7 +31,7 @@ public class RepositoryConfig {
     }
 
     @Bean
-    EntityRepository<News> getNewsRepository() {
+    NewsRepository getNewsRepository() {
         return new NewsRepositoryImpl(getJdbcTemplate());
     }
 

@@ -1,14 +1,13 @@
 package com.epam.lab.controller;
 
-import com.epam.lab.dto.Author;
-import com.epam.lab.dto.News;
-import com.epam.lab.dto.SearchCriteria;
+import com.epam.lab.dto.*;
 import com.epam.lab.service.NewsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -24,8 +23,15 @@ public class NewsController {
     }
 
     @GetMapping(value = "/news")
-    public List<News> readNews(@RequestBody SearchCriteria criteria) { // TODO: search criteria
-        List<News> news = newsService.readNews(criteria);
+    public List<News> readNews(@RequestParam(required = false) List<String> tags,
+                               @RequestParam(required = false) String author,
+                               @RequestParam(required = false) SortCriteria sort) {
+        List<News> news = newsService.readNews(new SearchCriteria()
+                .setSortCriteria(sort)
+                .setAuthor(new Author().setName(author))
+                .setTags(tags != null
+                        ? tags.stream().map(tag -> new Tag().setName(tag)).collect(Collectors.toList())
+                        : null));
         return news;
     }
 
@@ -51,9 +57,15 @@ public class NewsController {
         return newsService.countNews();
     }
 
-    @PostMapping(value = "/news/{id}/author")
-    public void addAuthor(@PathVariable("id") Long id,
-                          @RequestBody Author author) {
-        newsService.addAuthor(new News().setId(id), author);
+    @PostMapping(value = "/news/{newsId}/author/{authorId}")
+    public void addAuthor(@PathVariable("newsId") Long newsId,
+                          @PathVariable("authorId") Long authorId) {
+        newsService.addAuthor(new News().setId(newsId), new Author().setId(authorId));
+    }
+
+    @PostMapping(value = "/news/{newsId}/tags/{tagId}")
+    public void addTag(@PathVariable("newsId") Long newsId,
+                       @PathVariable("tagId") Long tagId) {
+        newsService.addTag(new News().setId(newsId), new Tag().setId(tagId));
     }
 }

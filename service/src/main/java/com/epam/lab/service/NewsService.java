@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface NewsService extends CrudService<News> {
     void addAuthor(News news, Author author);
-    void addTags(List<Tag> tags);
+    void addTag(News news, Tag tag);
     long countNews();
     List<News> readNews(SearchCriteria criteria);
 }

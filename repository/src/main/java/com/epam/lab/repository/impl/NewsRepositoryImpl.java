@@ -4,6 +4,7 @@ import com.epam.lab.dto.Author;
 import com.epam.lab.dto.News;
 import com.epam.lab.dto.Tag;
 import com.epam.lab.repository.EntityRepository;
+import com.epam.lab.repository.NewsRepository;
 import com.epam.lab.specification.EntitySpecification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -13,7 +14,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import java.sql.PreparedStatement;
 import java.util.List;
 
-public class NewsRepositoryImpl implements EntityRepository<News> {
+public class NewsRepositoryImpl implements NewsRepository {
     @Autowired
     private EntityRepository<Tag> tagRepository;
     @Autowired
@@ -22,8 +23,7 @@ public class NewsRepositoryImpl implements EntityRepository<News> {
     private JdbcTemplate jdbcTemplate;
 
     private static final String SQL_INSERT_NEWS = "INSERT INTO news " +
-            "(title, short_text, full_text, creation_date, modification_date) " +
-            "VALUES (?, ?, ?, ?, ?)";
+            "(title, short_text, full_text, creation_date, modification_date) VALUES (?, ?, ?, ?, ?)";
     private static final String SQL_UPDATE_NEWS = "UPDATE news SET " +
             "title = coalesce(?, title), " +
             "short_text = coalesce(?, short_text), " +
@@ -57,13 +57,13 @@ public class NewsRepositoryImpl implements EntityRepository<News> {
         if (tags != null) {
             for (Tag tag : tags) {
                 Tag identifiedTag = tagRepository.create(tag);
-                jdbcTemplate.update(SQL_INSERT_NEWS_TAG, news.getId(), identifiedTag.getId());
+                addTag(news, identifiedTag);
             }
         }
         Author author = news.getAuthor();
         if (author != null) {
             Author identifiedAuthor = authorRepository.create(author);
-            jdbcTemplate.update(SQL_INSERT_NEWS_AUTHOR, news.getId(), identifiedAuthor.getId());
+            addAuthor(news, identifiedAuthor);
         }
         return news;
     }
@@ -105,4 +105,13 @@ public class NewsRepositoryImpl implements EntityRepository<News> {
         return news;
     }
 
+    @Override
+    public void addAuthor(News news, Author author) {
+        jdbcTemplate.update(SQL_INSERT_NEWS_AUTHOR, news.getId(), author.getId());
+    }
+
+    @Override
+    public void addTag(News news, Tag tag) {
+        jdbcTemplate.update(SQL_INSERT_NEWS_TAG, news.getId(), tag.getId());
+    }
 }
