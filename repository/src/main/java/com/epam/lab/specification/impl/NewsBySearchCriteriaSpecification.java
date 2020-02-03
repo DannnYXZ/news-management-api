@@ -12,7 +12,7 @@ import java.text.MessageFormat;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class NewsSearchCriteriaSpecification implements EntitySpecification {
+public class NewsBySearchCriteriaSpecification implements EntitySpecification {
 
     private static final String SQL_SELECT_ALL_NEWS = "SELECT * FROM news ";
     private static final String SQL_INNER_JOIN_BY_AUTHOR = "INNER JOIN " +
@@ -24,7 +24,7 @@ public class NewsSearchCriteriaSpecification implements EntitySpecification {
     private static final String SQL_SORT_BY = "ORDER BY {0}";
     private SearchCriteria criteria;
 
-    public NewsSearchCriteriaSpecification(SearchCriteria criteria) {
+    public NewsBySearchCriteriaSpecification(SearchCriteria criteria) {
         this.criteria = criteria;
     }
 

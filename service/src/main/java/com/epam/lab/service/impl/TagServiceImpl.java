@@ -3,7 +3,7 @@ package com.epam.lab.service.impl;
 import com.epam.lab.dto.Tag;
 import com.epam.lab.repository.EntityRepository;
 import com.epam.lab.service.TagService;
-import com.epam.lab.specification.impl.TagIdSpecification;
+import com.epam.lab.specification.impl.TagsByIdSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -20,7 +20,7 @@ public class TagServiceImpl implements TagService {
 
     @Override
     public Tag read(Tag element) {
-        List<Tag> tags = tagRepository.query(new TagIdSpecification(element.getId()));
+        List<Tag> tags = tagRepository.query(new TagsByIdSpecification(element.getId()));
         return tags.get(0);
     }
 

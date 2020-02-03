@@ -6,6 +6,8 @@ import com.epam.lab.dto.Tag;
 import com.epam.lab.repository.EntityRepository;
 import com.epam.lab.repository.NewsRepository;
 import com.epam.lab.specification.EntitySpecification;
+import com.epam.lab.specification.impl.AuthorsByNewsIdSpecification;
+import com.epam.lab.specification.impl.TagsByNewsIdSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -102,6 +104,11 @@ public class NewsRepositoryImpl implements NewsRepository {
                         .setFullText(rs.getString("full_text"))
                         .setCreationDate(rs.getDate("creation_date"))
                         .setModificationDate(rs.getDate("modification_date")));
+        for (News item : news) {
+            item.setTags(tagRepository.query(new TagsByNewsIdSpecification(item.getId())));
+            List<Author> authors = authorRepository.query(new AuthorsByNewsIdSpecification(item.getId()));
+            item.setAuthor(authors.size() > 0 ? authors.get(0) : null);
+        }
         return news;
     }
 

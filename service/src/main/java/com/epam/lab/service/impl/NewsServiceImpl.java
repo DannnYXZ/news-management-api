@@ -6,8 +6,8 @@ import com.epam.lab.dto.SearchCriteria;
 import com.epam.lab.dto.Tag;
 import com.epam.lab.repository.NewsRepository;
 import com.epam.lab.service.NewsService;
-import com.epam.lab.specification.impl.NewsIdSpecification;
-import com.epam.lab.specification.impl.NewsSearchCriteriaSpecification;
+import com.epam.lab.specification.impl.NewsByIdSpecification;
+import com.epam.lab.specification.impl.NewsBySearchCriteriaSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -31,7 +31,7 @@ public class NewsServiceImpl implements NewsService {
 
     @Override
     public News read(News element) {
-        List<News> news = newsRepository.query(new NewsIdSpecification(element.getId()));
+        List<News> news = newsRepository.query(new NewsByIdSpecification(element.getId()));
         return news.get(0);
     }
 
@@ -47,7 +47,7 @@ public class NewsServiceImpl implements NewsService {
 
     @Override
     public List<News> readNews(SearchCriteria criteria) {
-        return newsRepository.query(new NewsSearchCriteriaSpecification(criteria));
+        return newsRepository.query(new NewsBySearchCriteriaSpecification(criteria));
     }
 
     @Override

@@ -5,12 +5,12 @@ import org.springframework.jdbc.core.PreparedStatementCreator;
 
 import java.sql.PreparedStatement;
 
-public class AuthorIdSpecification implements EntitySpecification {
+public class AuthorsByIdSpecification implements EntitySpecification {
 
     private static final String SQL_SELECT_AUTHOR = "SELECT * FROM author WHERE id = ?";
     private long id;
 
-    public AuthorIdSpecification(long id) {
+    public AuthorsByIdSpecification(long id) {
         this.id = id;
     }
 
