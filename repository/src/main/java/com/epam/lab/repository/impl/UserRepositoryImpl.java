@@ -1,6 +1,7 @@
 package com.epam.lab.repository.impl;
 
-import com.epam.lab.dto.User;
+
+import com.epam.lab.model.User;
 import com.epam.lab.repository.EntityRepository;
 import com.epam.lab.specification.EntitySpecification;
 import org.springframework.beans.factory.annotation.Autowired;

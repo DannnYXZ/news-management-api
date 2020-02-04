@@ -1,9 +1,9 @@
 package com.epam.lab.specification.impl;
 
-import com.epam.lab.dto.Author;
-import com.epam.lab.dto.SearchCriteria;
-import com.epam.lab.dto.SortCriteria;
-import com.epam.lab.dto.Tag;
+import com.epam.lab.model.Author;
+import com.epam.lab.model.SearchCriteria;
+import com.epam.lab.model.SortCriteria;
+import com.epam.lab.model.Tag;
 import com.epam.lab.specification.EntitySpecification;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 

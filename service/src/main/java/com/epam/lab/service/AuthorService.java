@@ -1,6 +1,6 @@
 package com.epam.lab.service;
 
-import com.epam.lab.dto.Author;
+import com.epam.lab.dto.AuthorDTO;
 
-public interface AuthorService extends CrudService<Author> {
+public interface AuthorService extends CrudService<AuthorDTO> {
 }

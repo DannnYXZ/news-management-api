@@ -1,8 +1,8 @@
 package com.epam.lab.repository;
 
-import com.epam.lab.dto.Author;
-import com.epam.lab.dto.News;
-import com.epam.lab.dto.Tag;
+import com.epam.lab.model.Author;
+import com.epam.lab.model.News;
+import com.epam.lab.model.Tag;
 
 public interface NewsRepository extends EntityRepository<News> {
     void addAuthor(News news, Author author);

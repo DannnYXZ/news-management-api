@@ -17,39 +17,39 @@ public class NewsController {
     NewsService newsService;
 
     @PostMapping(value = "/news")
-    public News createNews(@RequestBody News news) {
-        News identifiedNews = newsService.create(news);
+    public NewsDTO createNews(@RequestBody NewsDTO news) {
+        NewsDTO identifiedNews = newsService.create(news);
         return identifiedNews;
     }
 
     @GetMapping(value = "/news")
-    public List<News> readNews(@RequestParam(required = false) List<String> tags,
+    public List<NewsDTO> readNews(@RequestParam(required = false) List<String> tags,
                                @RequestParam(required = false) String author,
-                               @RequestParam(required = false) SortCriteria sort) {
-        List<News> news = newsService.readNews(new SearchCriteria()
+                               @RequestParam(required = false) SortCriteriaDTO sort) {
+        List<NewsDTO> news = newsService.readNews(new SearchCriteriaDTO()
                 .setSortCriteria(sort)
-                .setAuthor(new Author().setName(author))
+                .setAuthor(new AuthorDTO().setName(author))
                 .setTags(tags != null
-                        ? tags.stream().map(tag -> new Tag().setName(tag)).collect(Collectors.toList())
+                        ? tags.stream().map(tag -> new TagDTO().setName(tag)).collect(Collectors.toList())
                         : null));
         return news;
     }
 
     @GetMapping(value = "/news/{id}")
-    public News readNews(@PathVariable("id") Long id) {
-        News news = newsService.read(new News().setId(id));
+    public NewsDTO readNews(@PathVariable("id") Long id) {
+        NewsDTO news = newsService.read(new NewsDTO().setId(id));
         return news;
     }
 
     @PutMapping(value = "/news/{id}")
     public void updateNews(@PathVariable("id") Long id,
-                           @RequestBody News news) {
+                           @RequestBody NewsDTO news) {
         newsService.update(news.setId(id));
     }
 
     @DeleteMapping(value = "/news/{id}")
     public void deleteNews(@PathVariable("id") Long id) {
-        newsService.delete(new News().setId(id));
+        newsService.delete(new NewsDTO().setId(id));
     }
 
     @GetMapping(value = "/news/count")
@@ -60,12 +60,12 @@ public class NewsController {
     @PostMapping(value = "/news/{newsId}/author/{authorId}")
     public void addAuthor(@PathVariable("newsId") Long newsId,
                           @PathVariable("authorId") Long authorId) {
-        newsService.addAuthor(new News().setId(newsId), new Author().setId(authorId));
+        newsService.addAuthor(new NewsDTO().setId(newsId), new AuthorDTO().setId(authorId));
     }
 
     @PostMapping(value = "/news/{newsId}/tags/{tagId}")
     public void addTag(@PathVariable("newsId") Long newsId,
                        @PathVariable("tagId") Long tagId) {
-        newsService.addTag(new News().setId(newsId), new Tag().setId(tagId));
+        newsService.addTag(new NewsDTO().setId(newsId), new TagDTO().setId(tagId));
     }
 }

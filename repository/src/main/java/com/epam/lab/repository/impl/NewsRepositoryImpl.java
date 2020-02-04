@@ -1,8 +1,8 @@
 package com.epam.lab.repository.impl;
 
-import com.epam.lab.dto.Author;
-import com.epam.lab.dto.News;
-import com.epam.lab.dto.Tag;
+import com.epam.lab.model.Author;
+import com.epam.lab.model.News;
+import com.epam.lab.model.Tag;
 import com.epam.lab.repository.EntityRepository;
 import com.epam.lab.repository.NewsRepository;
 import com.epam.lab.specification.EntitySpecification;

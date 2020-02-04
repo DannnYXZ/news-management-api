@@ -1,4 +1,4 @@
-package com.epam.lab.dto;
+package com.epam.lab.model;
 
 public class Role {
     private long userId;

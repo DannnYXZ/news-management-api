@@ -6,6 +6,7 @@ import com.epam.lab.service.TagService;
 import com.epam.lab.service.impl.AuthorServiceImpl;
 import com.epam.lab.service.impl.NewsServiceImpl;
 import com.epam.lab.service.impl.TagServiceImpl;
+import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -26,5 +27,10 @@ public class ServiceConfig {
     @Bean
     TagService getTagService() {
         return new TagServiceImpl();
+    }
+
+    @Bean
+    ModelMapper getModelMapper() {
+        return new ModelMapper();
     }
 }

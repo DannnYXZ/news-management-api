@@ -1,11 +1,11 @@
 package com.epam.lab.configuration;
 
-import com.epam.lab.dto.SortCriteria;
+import com.epam.lab.dto.SortCriteriaDTO;
 import org.springframework.core.convert.converter.Converter;
 
-public class StringToEnumConverter implements Converter<String, SortCriteria> {
+public class StringToEnumConverter implements Converter<String, SortCriteriaDTO> {
     @Override
-    public SortCriteria convert(String source) {
-        return SortCriteria.valueOf(source.toUpperCase());
+    public SortCriteriaDTO convert(String source) {
+        return SortCriteriaDTO.valueOf(source.toUpperCase());
     }
 }

@@ -1,6 +1,6 @@
 package com.epam.lab.repository.impl;
 
-import com.epam.lab.dto.Author;
+import com.epam.lab.model.Author;
 import com.epam.lab.repository.EntityRepository;
 import com.epam.lab.specification.EntitySpecification;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,12 +15,11 @@ import java.util.List;
 public class AuthorRepositoryImpl implements EntityRepository<Author> {
 
     private JdbcTemplate jdbcTemplate;
-    private static final String SQL_INSERT_USER = "INSERT INTO author (name, surname) VALUES (?, ?)";
-    private static final String SQL_UPDATE_USER = "UPDATE author SET " +
+    private static final String SQL_INSERT_AUTHOR = "INSERT INTO author (name, surname) VALUES (?, ?)";
+    private static final String SQL_UPDATE_AUTHOR = "UPDATE author SET " +
             "name = coalesce(?, name), " +
             "surname = coalesce(?, surname) WHERE id = ?";
-    private static final String SQL_REMOVE_USER = "DELETE FROM author WHERE id = ?";
-    private static final String SQL_INSERT_NEWS_AUTHOR = "INSERT INTO news_author (news_id, author_id) VALUES (?, ?)";
+    private static final String SQL_REMOVE_AUTHOR = "DELETE FROM author WHERE id = ?";
 
     @Autowired
     public AuthorRepositoryImpl(JdbcTemplate jdbcTemplate) {
@@ -31,7 +30,7 @@ public class AuthorRepositoryImpl implements EntityRepository<Author> {
     public Author create(Author author) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
-            PreparedStatement ps = connection.prepareStatement(SQL_INSERT_USER, new String[]{"id"});
+            PreparedStatement ps = connection.prepareStatement(SQL_INSERT_AUTHOR, new String[]{"id"});
             ps.setString(1, author.getName());
             ps.setString(2, author.getSurname());
             return ps;
@@ -42,12 +41,13 @@ public class AuthorRepositoryImpl implements EntityRepository<Author> {
 
     @Override
     public void update(Author author) {
-        jdbcTemplate.update(SQL_UPDATE_USER, author.getName(), author.getSurname(), author.getId());
+        jdbcTemplate.update(SQL_UPDATE_AUTHOR, author.getName(), author.getSurname(), author.getId());
     }
 
     @Override
     public void delete(Author author) {
-        jdbcTemplate.update(SQL_REMOVE_USER, author.getId());
+        jdbcTemplate.update(SQL_REMOVE_AUTHOR, author.getId());
+        jdbcTemplate.update(SQL_REMOVE_AUTHOR, author.getId());
     }
 
     @Override

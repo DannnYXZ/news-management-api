@@ -1,4 +1,4 @@
-package com.epam.lab.dto;
+package com.epam.lab.model;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.epam.lab.dto;
+package com.epam.lab.model;
 
 public class User {
     private long id;

@@ -1,9 +1,11 @@
 package com.epam.lab.service.impl;
 
-import com.epam.lab.dto.Author;
+import com.epam.lab.dto.AuthorDTO;
+import com.epam.lab.model.Author;
 import com.epam.lab.repository.EntityRepository;
 import com.epam.lab.service.AuthorService;
 import com.epam.lab.specification.impl.AuthorsByIdSpecification;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -11,26 +13,29 @@ import java.util.List;
 public class AuthorServiceImpl implements AuthorService {
     @Autowired
     EntityRepository<Author> authorRepository;
+    @Autowired
+    ModelMapper modelMapper;
 
     @Override
-    public Author create(Author element) {
-        Author identifiedAuthor = authorRepository.create(element);
-        return identifiedAuthor;
+    public AuthorDTO create(AuthorDTO element) {
+        Author author = modelMapper.map(element, Author.class);
+        Author identifiedAuthor = authorRepository.create(author);
+        return modelMapper.map(identifiedAuthor, AuthorDTO.class);
     }
 
     @Override
-    public Author read(Author element) {
+    public AuthorDTO read(AuthorDTO element) {
         List<Author> authors = authorRepository.query(new AuthorsByIdSpecification(element.getId()));
-        return authors.get(0);
+        return modelMapper.map(authors.get(0), AuthorDTO.class);
     }
 
     @Override
-    public void update(Author element) {
-        authorRepository.update(element);
+    public void update(AuthorDTO element) {
+        authorRepository.update(modelMapper.map(element, Author.class));
     }
 
     @Override
-    public void delete(Author element) {
-        authorRepository.delete(element);
+    public void delete(AuthorDTO element) {
+        authorRepository.delete(modelMapper.map(element, Author.class));
     }
 }

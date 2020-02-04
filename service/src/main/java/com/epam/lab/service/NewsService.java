@@ -1,15 +1,16 @@
 package com.epam.lab.service;
 
-import com.epam.lab.dto.Author;
-import com.epam.lab.dto.News;
-import com.epam.lab.dto.SearchCriteria;
-import com.epam.lab.dto.Tag;
+import com.epam.lab.dto.AuthorDTO;
+import com.epam.lab.dto.NewsDTO;
+import com.epam.lab.dto.SearchCriteriaDTO;
+import com.epam.lab.dto.TagDTO;
 
 import java.util.List;
 
-public interface NewsService extends CrudService<News> {
-    void addAuthor(News news, Author author);
-    void addTag(News news, Tag tag);
+
+public interface NewsService extends CrudService<NewsDTO> {
+    void addAuthor(NewsDTO news, AuthorDTO author);
+    void addTag(NewsDTO news, TagDTO tag);
     long countNews();
-    List<News> readNews(SearchCriteria criteria);
+    List<NewsDTO> readNews(SearchCriteriaDTO criteria);
 }
