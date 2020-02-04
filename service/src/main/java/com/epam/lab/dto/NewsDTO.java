@@ -1,5 +1,7 @@
 package com.epam.lab.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 import java.util.List;
 
@@ -8,7 +10,9 @@ public class NewsDTO {
     private String title;
     private String shortText;
     private String fullText;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
     private Date creationDate;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
     private Date modificationDate;
     private AuthorDTO author;
     private List<TagDTO> tags;

@@ -24,8 +24,8 @@ public class NewsController {
 
     @GetMapping(value = "/news")
     public List<NewsDTO> readNews(@RequestParam(required = false) List<String> tags,
-                               @RequestParam(required = false) String author,
-                               @RequestParam(required = false) SortCriteriaDTO sort) {
+                                  @RequestParam(required = false) String author,
+                                  @RequestParam(required = false) SortCriteriaDTO sort) {
         List<NewsDTO> news = newsService.readNews(new SearchCriteriaDTO()
                 .setSortCriteria(sort)
                 .setAuthor(new AuthorDTO().setName(author))

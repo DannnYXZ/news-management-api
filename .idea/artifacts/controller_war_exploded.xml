@@ -24,9 +24,6 @@
           <element id="library" level="project" name="Maven: org.slf4j:slf4j-api:1.7.25" />
           <element id="library" level="project" name="Maven: org.postgresql:postgresql:42.2.9" />
           <element id="library" level="project" name="Maven: org.modelmapper:modelmapper:2.3.0" />
-          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.10.2" />
-          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.10.2" />
-          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-core:2.10.2" />
           <element id="library" level="project" name="Maven: org.springframework:spring-context:5.2.2.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-aop:5.2.2.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-beans:5.2.2.RELEASE" />
@@ -46,6 +43,9 @@
           <element id="library" level="project" name="Maven: org.opentest4j:opentest4j:1.2.0" />
           <element id="library" level="project" name="Maven: org.junit.platform:junit-platform-commons:1.5.2" />
           <element id="library" level="project" name="Maven: org.junit.jupiter:junit-jupiter-api:5.5.2" />
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.10.2" />
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.10.2" />
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-core:2.10.2" />
         </element>
       </element>
       <element id="directory" name="META-INF">

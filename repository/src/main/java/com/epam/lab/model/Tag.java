@@ -1,6 +1,6 @@
 package com.epam.lab.model;
 
-public class Tag {
+public class Tag implements Comparable<Tag> {
     private long id;
     private String name;
 
@@ -20,5 +20,12 @@ public class Tag {
     public Tag setName(String name) {
         this.name = name;
         return this;
+    }
+
+    @Override
+    public int compareTo(Tag tag) {
+        if (tag == null) return -1;
+        if (tag.name == null) return -1;
+        return name.compareTo(tag.name);
     }
 }

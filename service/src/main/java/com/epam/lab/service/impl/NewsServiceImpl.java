@@ -1,13 +1,7 @@
 package com.epam.lab.service.impl;
 
-import com.epam.lab.dto.AuthorDTO;
-import com.epam.lab.dto.NewsDTO;
-import com.epam.lab.dto.SearchCriteriaDTO;
-import com.epam.lab.dto.TagDTO;
-import com.epam.lab.model.Author;
-import com.epam.lab.model.News;
-import com.epam.lab.model.SearchCriteria;
-import com.epam.lab.model.Tag;
+import com.epam.lab.dto.*;
+import com.epam.lab.model.*;
 import com.epam.lab.repository.NewsRepository;
 import com.epam.lab.service.NewsService;
 import com.epam.lab.specification.impl.NewsByIdSpecification;
@@ -15,6 +9,7 @@ import com.epam.lab.specification.impl.NewsBySearchCriteriaSpecification;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -54,10 +49,32 @@ public class NewsServiceImpl implements NewsService {
         newsRepository.delete(modelMapper.map(element, News.class));
     }
 
+    private void sortByCriteria(List<News> news, SortCriteria criteria) {
+        news.sort((a, b) -> {
+            if (criteria == SortCriteria.AUTHOR) {
+                Author auth1 = a.getAuthor(), auth2 = b.getAuthor();
+                return auth1 == null ? 1 : auth1.compareTo(auth2);
+            }
+            if (criteria == SortCriteria.TAG) {
+                List<Tag> tags1 = a.getTags(), tags2 = b.getTags();
+                return tags1 == null ? 1 : tags2 == null ? -1 : tags2.size() - tags1.size();
+            }
+            if (criteria == SortCriteria.DATE) {
+                Date date1 = a.getCreationDate(), date2 = b.getCreationDate();
+                return date1 == null ? 1 : date1.compareTo(date2);
+            }
+            return 0;
+        });
+    }
+
     @Override
     public List<NewsDTO> readNews(SearchCriteriaDTO criteria) {
         SearchCriteria searchCriteria = modelMapper.map(criteria, SearchCriteria.class);
         List<News> news = newsRepository.query(new NewsBySearchCriteriaSpecification(searchCriteria));
+        SortCriteriaDTO sortCriteriaDTO = criteria.getSortCriteria();
+        if (sortCriteriaDTO != null) {
+            sortByCriteria(news, modelMapper.map(sortCriteriaDTO, SortCriteria.class));
+        }
         return news.stream().map(x -> modelMapper.map(x, NewsDTO.class)).collect(Collectors.toList());
     }
 
