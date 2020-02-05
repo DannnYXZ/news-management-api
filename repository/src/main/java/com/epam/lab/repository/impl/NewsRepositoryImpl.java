@@ -1,5 +1,6 @@
 package com.epam.lab.repository.impl;
 
+import com.epam.lab.exception.EntityNotFoundException;
 import com.epam.lab.model.Author;
 import com.epam.lab.model.News;
 import com.epam.lab.model.Tag;
@@ -72,18 +73,22 @@ public class NewsRepositoryImpl implements NewsRepository {
 
     @Override
     public void update(News news) {
-        jdbcTemplate.update(SQL_UPDATE_NEWS,
+        if (jdbcTemplate.update(SQL_UPDATE_NEWS,
                 news.getTitle(),
                 news.getShortText(),
                 news.getFullText(),
                 news.getCreationDate(),
                 news.getModificationDate(),
-                news.getId());
+                news.getId()) == 0) {
+            throw new EntityNotFoundException("No such news.");
+        }
     }
 
     @Override
     public void delete(News news) {
-        jdbcTemplate.update(SQL_REMOVE_NEWS, news.getId());
+        if (jdbcTemplate.update(SQL_REMOVE_NEWS, news.getId()) == 0) {
+            throw new EntityNotFoundException("No such news.");
+        }
     }
 
     @Override

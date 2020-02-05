@@ -25,7 +25,7 @@ public class TagServiceImpl implements TagService {
     @Override
     public TagDTO read(TagDTO element) {
         List<Tag> tags = tagRepository.query(new TagsByIdSpecification(element.getId()));
-        return modelMapper.map(tags.get(0), TagDTO.class);
+        return modelMapper.map(tags.size() > 0 ? tags.get(0) : new Tag().setId(-1), TagDTO.class);
     }
 
     @Override

@@ -26,7 +26,7 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public AuthorDTO read(AuthorDTO element) {
         List<Author> authors = authorRepository.query(new AuthorsByIdSpecification(element.getId()));
-        return modelMapper.map(authors.get(0), AuthorDTO.class);
+        return modelMapper.map(authors.size() > 0 ? authors.get(0) : new Author().setId(-1), AuthorDTO.class);
     }
 
     @Override

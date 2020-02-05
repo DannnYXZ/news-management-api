@@ -1,6 +1,7 @@
 package com.epam.lab.repository.impl;
 
 
+import com.epam.lab.exception.EntityNotFoundException;
 import com.epam.lab.model.Tag;
 import com.epam.lab.repository.EntityRepository;
 import com.epam.lab.specification.EntitySpecification;
@@ -38,7 +39,9 @@ public class TagRepositoryImpl implements EntityRepository<Tag> {
 
     @Override
     public void update(Tag tag) {
-        jdbcTemplate.update(SQL_UPDATE_TAG, tag.getName(), tag.getId());
+        if (jdbcTemplate.update(SQL_UPDATE_TAG, tag.getName(), tag.getId()) == 0) {
+            throw new EntityNotFoundException("No such tag.");
+        }
     }
 
     @Override
