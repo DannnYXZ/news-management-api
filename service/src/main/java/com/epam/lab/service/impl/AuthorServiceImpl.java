@@ -1,6 +1,7 @@
 package com.epam.lab.service.impl;
 
 import com.epam.lab.dto.AuthorDTO;
+import com.epam.lab.exception.EntityNotFoundException;
 import com.epam.lab.model.Author;
 import com.epam.lab.repository.EntityRepository;
 import com.epam.lab.service.AuthorService;
@@ -26,7 +27,11 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public AuthorDTO read(AuthorDTO element) {
         List<Author> authors = authorRepository.query(new AuthorsByIdSpecification(element.getId()));
-        return modelMapper.map(authors.size() > 0 ? authors.get(0) : new Author().setId(-1), AuthorDTO.class);
+        if (!authors.isEmpty()) {
+            return modelMapper.map(authors.get(0), AuthorDTO.class);
+        } else {
+            throw new EntityNotFoundException("No suh author.");
+        }
     }
 
     @Override

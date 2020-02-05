@@ -1,6 +1,7 @@
 package com.epam.lab.service.impl;
 
 import com.epam.lab.dto.TagDTO;
+import com.epam.lab.exception.EntityNotFoundException;
 import com.epam.lab.model.Tag;
 import com.epam.lab.repository.EntityRepository;
 import com.epam.lab.service.TagService;
@@ -25,7 +26,11 @@ public class TagServiceImpl implements TagService {
     @Override
     public TagDTO read(TagDTO element) {
         List<Tag> tags = tagRepository.query(new TagsByIdSpecification(element.getId()));
-        return modelMapper.map(tags.size() > 0 ? tags.get(0) : new Tag().setId(-1), TagDTO.class);
+        if (!tags.isEmpty()) {
+            return modelMapper.map(tags.get(0), TagDTO.class);
+        } else {
+            throw new EntityNotFoundException("No suh tag.");
+        }
     }
 
     @Override

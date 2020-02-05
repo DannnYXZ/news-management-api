@@ -1,6 +1,7 @@
 package com.epam.lab.service.impl;
 
 import com.epam.lab.dto.*;
+import com.epam.lab.exception.EntityNotFoundException;
 import com.epam.lab.model.*;
 import com.epam.lab.repository.NewsRepository;
 import com.epam.lab.service.NewsService;
@@ -36,7 +37,11 @@ public class NewsServiceImpl implements NewsService {
     @Override
     public NewsDTO read(NewsDTO element) {
         List<News> newsList = newsRepository.query(new NewsByIdSpecification(element.getId()));
-        return modelMapper.map(newsList.get(0), NewsDTO.class);
+        if (!newsList.isEmpty()) {
+            return modelMapper.map(newsList.get(0), NewsDTO.class);
+        } else {
+            throw new EntityNotFoundException("No such news.");
+        }
     }
 
     @Override

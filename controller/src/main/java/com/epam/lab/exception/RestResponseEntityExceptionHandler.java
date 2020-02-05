@@ -38,7 +38,7 @@ class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler 
 
     @ExceptionHandler(value = {EntityNotFoundException.class})
     protected ResponseEntity<Object> handleEntityNotFoundException(EntityNotFoundException ex, WebRequest request) {
-        ApiErrorDTO apiError = new ApiErrorDTO(HttpStatus.CONFLICT, "error occurred", ex.getLocalizedMessage());
+        ApiErrorDTO apiError = new ApiErrorDTO(HttpStatus.NOT_FOUND, "error occurred", ex.getLocalizedMessage());
         return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getStatus());
     }
 

@@ -112,7 +112,7 @@ public class NewsRepositoryImpl implements NewsRepository {
         for (News item : news) {
             item.setTags(tagRepository.query(new TagsByNewsIdSpecification(item.getId())));
             List<Author> authors = authorRepository.query(new AuthorsByNewsIdSpecification(item.getId()));
-            item.setAuthor(authors.size() > 0 ? authors.get(0) : null);
+            item.setAuthor(!authors.isEmpty() ? authors.get(0) : null);
         }
         return news;
     }

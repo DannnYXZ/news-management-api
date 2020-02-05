@@ -3,6 +3,7 @@ package com.epam.lab.controller;
 import com.epam.lab.dto.*;
 import com.epam.lab.service.NewsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,6 +17,7 @@ public class NewsController {
     @Autowired
     NewsService newsService;
 
+    @ResponseStatus(code = HttpStatus.CREATED)
     @PostMapping(value = "/news")
     public NewsDTO createNews(@RequestBody NewsDTO news) {
         NewsDTO identifiedNews = newsService.create(news);
@@ -57,12 +59,14 @@ public class NewsController {
         return newsService.countNews();
     }
 
+    @ResponseStatus(code = HttpStatus.CREATED)
     @PostMapping(value = "/news/{newsId}/author/{authorId}")
     public void addAuthor(@PathVariable("newsId") Long newsId,
                           @PathVariable("authorId") Long authorId) {
         newsService.addAuthor(new NewsDTO().setId(newsId), new AuthorDTO().setId(authorId));
     }
 
+    @ResponseStatus(code = HttpStatus.CREATED)
     @PostMapping(value = "/news/{newsId}/tags/{tagId}")
     public void addTag(@PathVariable("newsId") Long newsId,
                        @PathVariable("tagId") Long tagId) {
