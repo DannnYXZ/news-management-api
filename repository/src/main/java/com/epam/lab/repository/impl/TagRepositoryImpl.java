@@ -46,7 +46,9 @@ public class TagRepositoryImpl implements EntityRepository<Tag> {
 
     @Override
     public void delete(Tag tag) {
-        jdbcTemplate.update(SQL_REMOVE_TAG, tag.getId());
+        if (jdbcTemplate.update(SQL_REMOVE_TAG, tag.getId()) == 0) {
+            throw new EntityNotFoundException("No such tag.");
+        }
     }
 
     @Override
