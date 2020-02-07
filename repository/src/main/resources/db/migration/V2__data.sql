@@ -206,64 +206,6 @@ COPY public.roles (user_id, role_name) FROM stdin;
 16	MANAGER
 \.
 
-
---
--- Data for Name: author; Type: TABLE DATA; Schema: schema; Owner: -
---
-
-COPY schema.author (id, name, surname) FROM stdin;
-1	dsd	sdsd
-\.
-
-
---
--- Data for Name: news; Type: TABLE DATA; Schema: schema; Owner: -
---
-
-COPY schema.news (id, title, short_text, full_text, creation_date, modification_date) FROM stdin;
-\.
-
-
---
--- Data for Name: news_author; Type: TABLE DATA; Schema: schema; Owner: -
---
-
-COPY schema.news_author (news_id, author_id) FROM stdin;
-\.
-
-
---
--- Data for Name: tag; Type: TABLE DATA; Schema: schema; Owner: -
---
-
-COPY schema.tag (id, name) FROM stdin;
-\.
-
-
---
--- Data for Name: news_tag; Type: TABLE DATA; Schema: schema; Owner: -
---
-
-COPY schema.news_tag (news_id, tag_id) FROM stdin;
-\.
-
-
---
--- Data for Name: user; Type: TABLE DATA; Schema: schema; Owner: -
---
-
-COPY schema."user" (id, name, surname, login, password) FROM stdin;
-\.
-
-
---
--- Data for Name: roles; Type: TABLE DATA; Schema: schema; Owner: -
---
-
-COPY schema.roles (user_id, role_name) FROM stdin;
-\.
-
-
 --
 -- Name: author_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
@@ -290,13 +232,6 @@ SELECT pg_catalog.setval('public.tag_id_seq', 21, true);
 --
 
 SELECT pg_catalog.setval('public.user_id_seq', 17, true);
-
-
---
--- Name: author_id_seq; Type: SEQUENCE SET; Schema: schema; Owner: -
---
-
-SELECT pg_catalog.setval('schema.author_id_seq', 1, true);
 
 
 --

@@ -84,4 +84,33 @@ public class News {
         this.tags = tags;
         return this;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        News news = (News) o;
+        if (id != news.id) return false;
+        if (title != null ? !title.equals(news.title) : news.title != null) return false;
+        if (shortText != null ? !shortText.equals(news.shortText) : news.shortText != null) return false;
+        if (fullText != null ? !fullText.equals(news.fullText) : news.fullText != null) return false;
+        if (creationDate != null ? !creationDate.equals(news.creationDate) : news.creationDate != null) return false;
+        if (modificationDate != null ? !modificationDate.equals(news.modificationDate) : news.modificationDate != null)
+            return false;
+        if (author != null ? !author.equals(news.author) : news.author != null) return false;
+        return tags != null ? tags.equals(news.tags) : news.tags == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + (title != null ? title.hashCode() : 0);
+        result = 31 * result + (shortText != null ? shortText.hashCode() : 0);
+        result = 31 * result + (fullText != null ? fullText.hashCode() : 0);
+        result = 31 * result + (creationDate != null ? creationDate.hashCode() : 0);
+        result = 31 * result + (modificationDate != null ? modificationDate.hashCode() : 0);
+        result = 31 * result + (author != null ? author.hashCode() : 0);
+        result = 31 * result + (tags != null ? tags.hashCode() : 0);
+        return result;
+    }
 }

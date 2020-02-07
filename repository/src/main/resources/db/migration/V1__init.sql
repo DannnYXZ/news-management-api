@@ -20,7 +20,7 @@ SET row_security = off;
 -- Name: schema; Type: SCHEMA; Schema: -; Owner: -
 --
 
-CREATE SCHEMA schema;
+CREATE SCHEMA IF NOT EXISTS schema;
 
 
 SET default_tablespace = '';
@@ -31,7 +31,7 @@ SET default_with_oids = false;
 -- Name: author; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.author (
+CREATE TABLE IF NOT EXISTS public.author (
                                id bigint NOT NULL,
                                name character varying(30) NOT NULL,
                                surname character varying(30) NOT NULL
@@ -61,7 +61,7 @@ ALTER SEQUENCE public.author_id_seq OWNED BY public.author.id;
 -- Name: news; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.news (
+CREATE TABLE IF NOT EXISTS public.news (
                              id bigint NOT NULL,
                              title character varying(200) NOT NULL,
                              short_text character varying(500) NOT NULL,
@@ -75,7 +75,7 @@ CREATE TABLE public.news (
 -- Name: news_author; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.news_author (
+CREATE TABLE IF NOT EXISTS public.news_author (
                                     news_id bigint NOT NULL,
                                     author_id bigint NOT NULL
 );
@@ -104,7 +104,7 @@ ALTER SEQUENCE public.news_id_seq OWNED BY public.news.id;
 -- Name: news_tag; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.news_tag (
+CREATE TABLE IF NOT EXISTS public.news_tag (
                                  news_id bigint NOT NULL,
                                  tag_id bigint NOT NULL
 );
@@ -114,7 +114,7 @@ CREATE TABLE public.news_tag (
 -- Name: roles; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.roles (
+CREATE TABLE IF NOT EXISTS public.roles (
                               user_id bigint NOT NULL,
                               role_name character varying(30) NOT NULL
 );
@@ -124,7 +124,7 @@ CREATE TABLE public.roles (
 -- Name: tag; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.tag (
+CREATE TABLE IF NOT EXISTS public.tag (
                             id bigint NOT NULL,
                             name character varying(30) NOT NULL
 );
@@ -153,7 +153,7 @@ ALTER SEQUENCE public.tag_id_seq OWNED BY public.tag.id;
 -- Name: user; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public."user" (
+CREATE TABLE IF NOT EXISTS public."user" (
                                id bigint NOT NULL,
                                name character varying(20) NOT NULL,
                                surname character varying(20) NOT NULL,
@@ -185,98 +185,6 @@ ALTER SEQUENCE public.user_id_seq OWNED BY public."user".id;
 -- Name: author; Type: TABLE; Schema: schema; Owner: -
 --
 
-CREATE TABLE schema.author (
-                               id bigint NOT NULL,
-                               name character varying(30) NOT NULL,
-                               surname character varying(30) NOT NULL
-);
-
-
---
--- Name: author_id_seq; Type: SEQUENCE; Schema: schema; Owner: -
---
-
-CREATE SEQUENCE schema.author_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: author_id_seq; Type: SEQUENCE OWNED BY; Schema: schema; Owner: -
---
-
-ALTER SEQUENCE schema.author_id_seq OWNED BY schema.author.id;
-
-
---
--- Name: news; Type: TABLE; Schema: schema; Owner: -
---
-
-CREATE TABLE schema.news (
-                             id bigint NOT NULL,
-                             title character varying(30) NOT NULL,
-                             short_text character varying(100) NOT NULL,
-                             full_text character varying(2000) NOT NULL,
-                             creation_date date NOT NULL,
-                             modification_date date NOT NULL
-);
-
-
---
--- Name: news_author; Type: TABLE; Schema: schema; Owner: -
---
-
-CREATE TABLE schema.news_author (
-                                    news_id bigint NOT NULL,
-                                    author_id bigint NOT NULL
-);
-
-
---
--- Name: news_tag; Type: TABLE; Schema: schema; Owner: -
---
-
-CREATE TABLE schema.news_tag (
-                                 news_id bigint NOT NULL,
-                                 tag_id bigint NOT NULL
-);
-
-
---
--- Name: roles; Type: TABLE; Schema: schema; Owner: -
---
-
-CREATE TABLE schema.roles (
-                              user_id bigint NOT NULL,
-                              role_name character varying(30) NOT NULL
-);
-
-
---
--- Name: tag; Type: TABLE; Schema: schema; Owner: -
---
-
-CREATE TABLE schema.tag (
-                            id bigint NOT NULL,
-                            name character varying(30) NOT NULL
-);
-
-
---
--- Name: user; Type: TABLE; Schema: schema; Owner: -
---
-
-CREATE TABLE schema."user" (
-                               id bigint NOT NULL,
-                               name character varying(20) NOT NULL,
-                               surname character varying(20) NOT NULL,
-                               login character varying(30) NOT NULL,
-                               password character varying(30) NOT NULL
-);
-
 
 --
 -- Name: author id; Type: DEFAULT; Schema: public; Owner: -
@@ -304,13 +212,6 @@ ALTER TABLE ONLY public.tag ALTER COLUMN id SET DEFAULT nextval('public.tag_id_s
 --
 
 ALTER TABLE ONLY public."user" ALTER COLUMN id SET DEFAULT nextval('public.user_id_seq'::regclass);
-
-
---
--- Name: author id; Type: DEFAULT; Schema: schema; Owner: -
---
-
-ALTER TABLE ONLY schema.author ALTER COLUMN id SET DEFAULT nextval('schema.author_id_seq'::regclass);
 
 
 --
@@ -360,39 +261,6 @@ ALTER TABLE ONLY public.tag
 ALTER TABLE ONLY public."user"
     ADD CONSTRAINT user_pk PRIMARY KEY (id);
 
-
---
--- Name: author author_pk; Type: CONSTRAINT; Schema: schema; Owner: -
---
-
-ALTER TABLE ONLY schema.author
-    ADD CONSTRAINT author_pk PRIMARY KEY (id);
-
-
---
--- Name: news news_pk; Type: CONSTRAINT; Schema: schema; Owner: -
---
-
-ALTER TABLE ONLY schema.news
-    ADD CONSTRAINT news_pk PRIMARY KEY (id);
-
-
---
--- Name: tag tag_pk; Type: CONSTRAINT; Schema: schema; Owner: -
---
-
-ALTER TABLE ONLY schema.tag
-    ADD CONSTRAINT tag_pk PRIMARY KEY (id);
-
-
---
--- Name: user user_pk; Type: CONSTRAINT; Schema: schema; Owner: -
---
-
-ALTER TABLE ONLY schema."user"
-    ADD CONSTRAINT user_pk PRIMARY KEY (id);
-
-
 --
 -- Name: news_author author_id; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
@@ -431,46 +299,6 @@ ALTER TABLE ONLY public.news_tag
 
 ALTER TABLE ONLY public.roles
     ADD CONSTRAINT user_id FOREIGN KEY (user_id) REFERENCES public."user"(id);
-
-
---
--- Name: news_author author_id; Type: FK CONSTRAINT; Schema: schema; Owner: -
---
-
-ALTER TABLE ONLY schema.news_author
-    ADD CONSTRAINT author_id FOREIGN KEY (author_id) REFERENCES schema.author(id);
-
-
---
--- Name: news_author news_id; Type: FK CONSTRAINT; Schema: schema; Owner: -
---
-
-ALTER TABLE ONLY schema.news_author
-    ADD CONSTRAINT news_id FOREIGN KEY (news_id) REFERENCES schema.news(id);
-
-
---
--- Name: news_tag news_id; Type: FK CONSTRAINT; Schema: schema; Owner: -
---
-
-ALTER TABLE ONLY schema.news_tag
-    ADD CONSTRAINT news_id FOREIGN KEY (news_id) REFERENCES schema.news(id);
-
-
---
--- Name: news_tag tag_id; Type: FK CONSTRAINT; Schema: schema; Owner: -
---
-
-ALTER TABLE ONLY schema.news_tag
-    ADD CONSTRAINT tag_id FOREIGN KEY (tag_id) REFERENCES schema.tag(id);
-
-
---
--- Name: roles user_id; Type: FK CONSTRAINT; Schema: schema; Owner: -
---
-
-ALTER TABLE ONLY schema.roles
-    ADD CONSTRAINT user_id FOREIGN KEY (user_id) REFERENCES schema."user"(id);
 
 
 --
