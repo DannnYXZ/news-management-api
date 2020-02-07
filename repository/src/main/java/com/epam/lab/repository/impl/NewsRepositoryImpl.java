@@ -139,7 +139,7 @@ public class NewsRepositoryImpl implements NewsRepository {
     @Override
     public void unlinkAuthor(News news, Author author) {
         if (jdbcTemplate.update(SQL_REMOVE_NEWS_AUTHOR, news.getId(), author.getId()) == 0) {
-            throw new EntityNotFoundException("News have no author " + author.getId() + " .");
+            throw new EntityNotFoundException("News " + news.getId() + "have no author " + author.getId() + ".");
         }
     }
 

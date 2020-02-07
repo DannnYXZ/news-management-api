@@ -52,7 +52,7 @@ class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler 
 
     @ExceptionHandler({TagsLinkageException.class})
     public ResponseEntity<Object> handleTagsLinkageException(TagsLinkageException ex, WebRequest request) {
-        ApiErrorDTO apiError = new ApiErrorDTO(HttpStatus.BAD_REQUEST, "Tag linkage problems :(", new ArrayList<>());
+        ApiErrorDTO apiError = new ApiErrorDTO(HttpStatus.CONFLICT, "Tag linkage problems :(", new ArrayList<>());
         apiError.getErrors().addAll(ex.getExceptions().stream().map(e -> e.getMessage()).collect(Collectors.toList()));
         return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getStatus());
     }

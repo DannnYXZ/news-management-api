@@ -61,33 +61,30 @@ public class NewsController {
 
     @ResponseStatus(code = HttpStatus.CREATED)
     @PostMapping(value = "/news/{newsId}/author/{authorId}")
-    public void addAuthor(@PathVariable("newsId") Long newsId,
-                          @PathVariable("authorId") Long authorId) {
+    public void linkAuthor(@PathVariable("newsId") Long newsId,
+                           @PathVariable("authorId") Long authorId) {
         newsService.linkAuthor(new NewsDTO().setId(newsId), new AuthorDTO().setId(authorId));
     }
 
-    /**
-     * @param newsId
-     * @param tags
-     */
+    @DeleteMapping(value = "/news/{newsId}/author/{authorId}")
+    public void unlinkAuthor(@PathVariable("newsId") Long newsId,
+                             @PathVariable("authorId") Long authorId) {
+        newsService.unlinkAuthor(new NewsDTO().setId(newsId), new AuthorDTO().setId(authorId));
+    }
+
     @ResponseStatus(code = HttpStatus.CREATED)
-    @PostMapping(value = "/news/{newsId}")
-    public void linkTags(@PathVariable("newsId") Long newsId,
-                         @RequestParam List<Long> tags) {
-        newsService.linkTags(new NewsDTO().setId(newsId), tags.stream()
+    @PostMapping(value = "/news/{id}/tags")
+    public void linkTags(@PathVariable("id") Long newsId,
+                         @RequestParam List<Long> link) {
+        newsService.linkTags(new NewsDTO().setId(newsId), link.stream()
                 .map(x -> new TagDTO().setId(x))
                 .collect(Collectors.toList()));
     }
 
-    /**
-     * @param newsId
-     * @param tags   -
-     */
-    @ResponseStatus(code = HttpStatus.CREATED)
-    @DeleteMapping(value = "/news/{newsId}")
-    public void unlinkTags(@PathVariable("newsId") Long newsId,
-                           @RequestParam List<Long> tags) {
-        newsService.unlinkTags(new NewsDTO().setId(newsId), tags.stream()
+    @DeleteMapping(value = "/news/{id}/tags")
+    public void unlinkTags(@PathVariable("id") Long newsId,
+                           @RequestParam List<Long> unlink) {
+        newsService.unlinkTags(new NewsDTO().setId(newsId), unlink.stream()
                 .map(x -> new TagDTO().setId(x))
                 .collect(Collectors.toList()));
     }
