@@ -17,12 +17,12 @@ public class NewsBySearchCriteriaSpecification implements EntitySpecification {
             "SELECT n.id, n.title, n.short_text, n.full_text, n.creation_date, n.modification_date FROM news as n ";
     private static final String SQL_INNER_JOIN_BY_AUTHOR =
             "INNER JOIN news_author ON n.id = news_author.news_id " +
-            "INNER JOIN author ON author.id = news_author.author_id AND author.name = {0} ";
+                    "INNER JOIN author ON author.id = news_author.author_id AND author.name = {0} ";
     private static final String SQL_INNER_JOIN_BY_TAGS =
             "INNER JOIN news_tag nt ON n.id = nt.news_id " +
-            "INNER JOIN tag tg ON tg.id = nt.tag_id " +
-            "WHERE tg.name IN ({0}) " +
-            "group by n.id having count(*)={1} ";
+                    "INNER JOIN tag tg ON tg.id = nt.tag_id " +
+                    "WHERE tg.name IN ({0}) " +
+                    "group by n.id having count(*)={1} ";
     private SearchCriteria criteria;
 
     public NewsBySearchCriteriaSpecification(SearchCriteria criteria) {
@@ -46,5 +46,20 @@ public class NewsBySearchCriteriaSpecification implements EntitySpecification {
             PreparedStatement preparedStatement = connection.prepareStatement(sql.toString());
             return preparedStatement;
         };
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        NewsBySearchCriteriaSpecification that = (NewsBySearchCriteriaSpecification) o;
+
+        return criteria != null ? criteria.equals(that.criteria) : that.criteria == null;
+    }
+
+    @Override
+    public int hashCode() {
+        return criteria != null ? criteria.hashCode() : 0;
     }
 }

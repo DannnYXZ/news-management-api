@@ -55,5 +55,4 @@ public class RepositoryTestConfig {
     EntityRepository<Author> getAuthorRepository() {
         return new AuthorRepositoryImpl(getJdbcTemplate());
     }
-
 }

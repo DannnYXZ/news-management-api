@@ -2,7 +2,7 @@ package com.epam.lab.dto;
 
 import org.springframework.http.HttpStatus;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ApiErrorDTO {
@@ -21,7 +21,8 @@ public class ApiErrorDTO {
         super();
         this.status = status;
         this.message = message;
-        errors = Arrays.asList(error);
+        errors = new ArrayList<>();
+        errors.add(error);
     }
 
     public HttpStatus getStatus() {

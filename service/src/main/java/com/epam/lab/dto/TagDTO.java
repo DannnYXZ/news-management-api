@@ -21,4 +21,22 @@ public class TagDTO {
         this.name = name;
         return this;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        TagDTO tagDTO = (TagDTO) o;
+
+        if (id != tagDTO.id) return false;
+        return name != null ? name.equals(tagDTO.name) : tagDTO.name == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        return result;
+    }
 }

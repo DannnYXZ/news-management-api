@@ -1,6 +1,9 @@
 package com.epam.lab.repository.impl;
 
 
+import com.epam.lab.exception.EntityExistsException;
+import com.epam.lab.exception.EntityNotFoundException;
+import com.epam.lab.exception.InsufficientEntityDataException;
 import com.epam.lab.model.Author;
 import com.epam.lab.model.News;
 import com.epam.lab.model.Tag;
@@ -20,10 +23,7 @@ import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.TimeZone;
+import java.util.*;
 
 @RunWith(JUnitParamsRunner.class)
 @ContextConfiguration(classes = {RepositoryTestConfig.class}, loader = AnnotationConfigContextLoader.class)
@@ -90,5 +90,79 @@ public class NewsRepositoryImplTest {
     public void testReadNewsById(long id, News expected) {
         List<News> actualNews = newsRepository.query(new NewsByIdSpecification(id));
         Assert.assertEquals(actualNews.get(0), expected);
+    }
+
+    public Object[] parametersForTestReadNewsByIdEmptyList() {
+        return new Object[]{
+                new Object[]{-1L},
+                new Object[]{100L}
+        };
+    }
+
+    @Test
+    @Parameters
+    public void testReadNewsByIdEmptyList(long id) {
+        List<News> actualNews = newsRepository.query(new NewsByIdSpecification(id));
+        Assert.assertTrue(actualNews.isEmpty());
+    }
+
+    @Test(expected = EntityExistsException.class)
+    public void testLinkExistingTagException() {
+        newsRepository.linkTag(new News().setId(7), new Tag().setId(11));
+    }
+
+    @Test(expected = EntityNotFoundException.class)
+    public void testLinkNonexistentTagException() {
+        newsRepository.linkTag(new News().setId(7), new Tag().setId(666));
+    }
+
+    @Test(expected = EntityExistsException.class)
+    public void testLinkAuthorExistsException() {
+        newsRepository.linkAuthor(new News().setId(10), new Author().setId(7));
+    }
+
+    @Test
+    public void testCreateNews() {
+        News identifiedNews = newsRepository.create(new News()
+                .setAuthor(new Author().setName("Salami").setSurname("Greg"))
+                .setTitle("Title")
+                .setShortText("Hmmmm")
+                .setFullText("Hmmmmmmmmmmmmmmmmmm")
+                .setModificationDate(new Date())
+                .setCreationDate(new Date()));
+        Assert.assertTrue(identifiedNews.getId() != 0);
+    }
+
+    @Test(expected = InsufficientEntityDataException.class)
+    public void testCreateNewsInsufficientDataException() {
+        newsRepository.create(new News()
+                .setAuthor(new Author().setName("Salami").setSurname("Greg"))
+                .setModificationDate(new Date())
+                .setCreationDate(new Date()));
+    }
+
+    @Test
+    public void testUpdateNews() {
+        try {
+            newsRepository.update(new News()
+                    .setId(1)
+                    .setTitle("So lets update title."));
+        } catch (Exception e) {
+            Assert.fail();
+        }
+    }
+
+    @Test
+    public void testDeleteNews() {
+        try {
+            newsRepository.delete(new News().setId(1));
+        } catch (Exception e) {
+            Assert.fail();
+        }
+    }
+
+    @Test(expected = EntityNotFoundException.class)
+    public void testDeleteNonexistentNews() {
+        newsRepository.delete(new News().setId(666));
     }
 }

@@ -63,13 +63,32 @@ public class NewsController {
     @PostMapping(value = "/news/{newsId}/author/{authorId}")
     public void addAuthor(@PathVariable("newsId") Long newsId,
                           @PathVariable("authorId") Long authorId) {
-        newsService.addAuthor(new NewsDTO().setId(newsId), new AuthorDTO().setId(authorId));
+        newsService.linkAuthor(new NewsDTO().setId(newsId), new AuthorDTO().setId(authorId));
     }
 
+    /**
+     * @param newsId
+     * @param tags
+     */
     @ResponseStatus(code = HttpStatus.CREATED)
-    @PostMapping(value = "/news/{newsId}/tags/{tagId}")
-    public void addTag(@PathVariable("newsId") Long newsId,
-                       @PathVariable("tagId") Long tagId) {
-        newsService.addTag(new NewsDTO().setId(newsId), new TagDTO().setId(tagId));
+    @PostMapping(value = "/news/{newsId}")
+    public void linkTags(@PathVariable("newsId") Long newsId,
+                         @RequestParam List<Long> tags) {
+        newsService.linkTags(new NewsDTO().setId(newsId), tags.stream()
+                .map(x -> new TagDTO().setId(x))
+                .collect(Collectors.toList()));
+    }
+
+    /**
+     * @param newsId
+     * @param tags   -
+     */
+    @ResponseStatus(code = HttpStatus.CREATED)
+    @DeleteMapping(value = "/news/{newsId}")
+    public void unlinkTags(@PathVariable("newsId") Long newsId,
+                           @RequestParam List<Long> tags) {
+        newsService.unlinkTags(new NewsDTO().setId(newsId), tags.stream()
+                .map(x -> new TagDTO().setId(x))
+                .collect(Collectors.toList()));
     }
 }

@@ -2,6 +2,7 @@ package com.epam.lab.service.impl;
 
 import com.epam.lab.dto.*;
 import com.epam.lab.exception.EntityNotFoundException;
+import com.epam.lab.exception.TagsLinkageException;
 import com.epam.lab.model.*;
 import com.epam.lab.repository.NewsRepository;
 import com.epam.lab.service.NewsService;
@@ -84,12 +85,42 @@ public class NewsServiceImpl implements NewsService {
     }
 
     @Override
-    public void addAuthor(NewsDTO news, AuthorDTO author) {
-        newsRepository.addAuthor(modelMapper.map(news, News.class), modelMapper.map(author, Author.class));
+    public void linkAuthor(NewsDTO news, AuthorDTO author) {
+        newsRepository.linkAuthor(modelMapper.map(news, News.class), modelMapper.map(author, Author.class));
     }
 
     @Override
-    public void addTag(NewsDTO news, TagDTO tag) {
-        newsRepository.addTag(modelMapper.map(news, News.class), modelMapper.map(tag, Tag.class));
+    public void unlinkAuthor(NewsDTO news, AuthorDTO author) {
+        newsRepository.unlinkAuthor(modelMapper.map(news, News.class), modelMapper.map(author, Author.class));
+    }
+
+    @Override
+    public void linkTags(NewsDTO news, List<TagDTO> tags) {
+        TagsLinkageException tle = new TagsLinkageException();
+        for (TagDTO tag : tags) {
+            try {
+                newsRepository.linkTag(modelMapper.map(news, News.class), modelMapper.map(tag, Tag.class));
+            } catch (Exception e) {
+                tle.add(e);
+            }
+        }
+        if (!tle.getExceptions().isEmpty()) {
+            throw tle;
+        }
+    }
+
+    @Override
+    public void unlinkTags(NewsDTO news, List<TagDTO> tags) {
+        TagsLinkageException tle = new TagsLinkageException();
+        for (TagDTO tag : tags) {
+            try {
+                newsRepository.unlinkTag(modelMapper.map(news, News.class), modelMapper.map(tag, Tag.class));
+            } catch (Exception e) {
+                tle.add(e);
+            }
+        }
+        if (!tle.getExceptions().isEmpty()) {
+            throw tle;
+        }
     }
 }

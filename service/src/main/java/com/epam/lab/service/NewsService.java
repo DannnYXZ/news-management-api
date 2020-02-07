@@ -9,8 +9,10 @@ import java.util.List;
 
 
 public interface NewsService extends CrudService<NewsDTO> {
-    void addAuthor(NewsDTO news, AuthorDTO author);
-    void addTag(NewsDTO news, TagDTO tag);
+    void linkAuthor(NewsDTO news, AuthorDTO author);
+    void unlinkAuthor(NewsDTO news, AuthorDTO author);
+    void linkTags(NewsDTO news, List<TagDTO> tags);
+    void unlinkTags(NewsDTO news, List<TagDTO> tags);
     long countNews();
     List<NewsDTO> readNews(SearchCriteriaDTO criteria);
 }

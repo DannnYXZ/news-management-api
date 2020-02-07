@@ -21,4 +21,19 @@ public class NewsByIdSpecification implements EntitySpecification {
             return preparedStatement;
         };
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        NewsByIdSpecification that = (NewsByIdSpecification) o;
+
+        return id == that.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return (int) (id ^ (id >>> 32));
+    }
 }
