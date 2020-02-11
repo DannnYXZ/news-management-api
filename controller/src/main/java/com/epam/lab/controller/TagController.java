@@ -24,8 +24,7 @@ public class TagController {
     }
 
     @PutMapping(value = "/tags/{id}")
-    public void updateTag(@PathVariable("id") Long id,
-                          @RequestBody TagDTO tag) {
+    public void updateTag(@PathVariable("id") Long id, @RequestBody TagDTO tag) {
         tagService.update(tag.setId(id));
     }
 

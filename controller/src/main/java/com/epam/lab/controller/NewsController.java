@@ -25,15 +25,8 @@ public class NewsController {
     }
 
     @GetMapping(value = "/news")
-    public List<NewsDTO> readNews(@RequestParam(required = false) List<String> tags,
-                                  @RequestParam(required = false) String author,
-                                  @RequestParam(required = false) SortCriteriaDTO sort) {
-        List<NewsDTO> news = newsService.readNews(new SearchCriteriaDTO()
-                .setSortCriteria(sort)
-                .setAuthor(new AuthorDTO().setName(author))
-                .setTags(tags != null
-                        ? tags.stream().map(tag -> new TagDTO().setName(tag)).collect(Collectors.toList())
-                        : null));
+    public List<NewsDTO> readNews(SearchCriteriaDTO searchCriteriaDTO) {
+        List<NewsDTO> news = newsService.readNews(searchCriteriaDTO);
         return news;
     }
 
@@ -44,8 +37,7 @@ public class NewsController {
     }
 
     @PutMapping(value = "/news/{id}")
-    public void updateNews(@PathVariable("id") Long id,
-                           @RequestBody NewsDTO news) {
+    public void updateNews(@PathVariable("id") Long id, @RequestBody NewsDTO news) {
         newsService.update(news.setId(id));
     }
 
@@ -61,31 +53,25 @@ public class NewsController {
 
     @ResponseStatus(code = HttpStatus.CREATED)
     @PostMapping(value = "/news/{newsId}/author/{authorId}")
-    public void linkAuthor(@PathVariable("newsId") Long newsId,
-                           @PathVariable("authorId") Long authorId) {
+    public void linkAuthor(@PathVariable("newsId") Long newsId, @PathVariable("authorId") Long authorId) {
         newsService.linkAuthor(new NewsDTO().setId(newsId), new AuthorDTO().setId(authorId));
     }
 
     @DeleteMapping(value = "/news/{newsId}/author/{authorId}")
-    public void unlinkAuthor(@PathVariable("newsId") Long newsId,
-                             @PathVariable("authorId") Long authorId) {
+    public void unlinkAuthor(@PathVariable("newsId") Long newsId, @PathVariable("authorId") Long authorId) {
         newsService.unlinkAuthor(new NewsDTO().setId(newsId), new AuthorDTO().setId(authorId));
     }
 
     @ResponseStatus(code = HttpStatus.CREATED)
     @PostMapping(value = "/news/{id}/tags")
-    public void linkTags(@PathVariable("id") Long newsId,
-                         @RequestParam List<Long> link) {
-        newsService.linkTags(new NewsDTO().setId(newsId), link.stream()
-                .map(x -> new TagDTO().setId(x))
-                .collect(Collectors.toList()));
+    public void linkTags(@PathVariable("id") Long newsId, @RequestParam List<Long> link) {
+        List<TagDTO> tagsToLink = link.stream().map(x -> new TagDTO().setId(x)).collect(Collectors.toList());
+        newsService.linkTags(new NewsDTO().setId(newsId), tagsToLink);
     }
 
     @DeleteMapping(value = "/news/{id}/tags")
-    public void unlinkTags(@PathVariable("id") Long newsId,
-                           @RequestParam List<Long> unlink) {
-        newsService.unlinkTags(new NewsDTO().setId(newsId), unlink.stream()
-                .map(x -> new TagDTO().setId(x))
-                .collect(Collectors.toList()));
+    public void unlinkTags(@PathVariable("id") Long newsId, @RequestParam List<Long> unlink) {
+        List<TagDTO> tagsToUnlink = unlink.stream().map(x -> new TagDTO().setId(x)).collect(Collectors.toList());
+        newsService.unlinkTags(new NewsDTO().setId(newsId), tagsToUnlink);
     }
 }

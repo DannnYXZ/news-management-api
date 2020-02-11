@@ -4,6 +4,13 @@ public class TagDTO {
     private long id;
     private String name;
 
+    public TagDTO() {
+    }
+
+    public TagDTO(String name) {
+        this.name = name;
+    }
+
     public long getId() {
         return id;
     }

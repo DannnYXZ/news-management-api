@@ -5,6 +5,13 @@ public class AuthorDTO {
     private String name;
     private String surname;
 
+    public AuthorDTO() {
+    }
+
+    public AuthorDTO(String name) {
+        this.name = name;
+    }
+
     public long getId() {
         return id;
     }

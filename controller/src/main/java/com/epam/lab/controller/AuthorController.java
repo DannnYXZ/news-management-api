@@ -26,8 +26,7 @@ public class AuthorController {
     }
 
     @PutMapping(value = "/author/{id}")
-    public void updateAuthor(@PathVariable("id") Long id,
-                             @RequestBody AuthorDTO author) {
+    public void updateAuthor(@PathVariable("id") Long id, @RequestBody AuthorDTO author) {
         authorService.update(author.setId(id));
     }
 
