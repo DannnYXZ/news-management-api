@@ -9,10 +9,7 @@ import com.epam.lab.repository.NewsRepository;
 import com.epam.lab.service.NewsService;
 import com.epam.lab.specification.impl.NewsByIdSpecification;
 import com.epam.lab.specification.impl.NewsBySearchCriteriaSpecification;
-import org.junit.Assert;
-import org.junit.ClassRule;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.runner.RunWith;
 import org.mockito.*;
 import org.mockito.junit.MockitoJUnitRunner;
@@ -36,13 +33,17 @@ public class NewsServiceImplTest {
     @Autowired
     NewsService newsService;
 
+    @Before
+    public void setup() {
+        Mockito.reset(newsRepository);
+    }
+
     @Test
     public void testCreateNewsReturnsIdentified() {
         long expectedId = 333;
         String title = "Not Identified";
-        News newsForRepository = new News().setTitle(title);
-        Mockito.when(newsRepository.create(newsForRepository))
-                .thenReturn(new News().setTitle(title).setId(expectedId));
+        Mockito.when(newsRepository.create(Mockito.any(News.class)))
+                .thenReturn(new News().setId(expectedId));
         NewsDTO inDTO = new NewsDTO().setTitle(title);
         NewsDTO outDTO = newsService.create(inDTO);
         Assert.assertEquals(outDTO.getId(), expectedId);

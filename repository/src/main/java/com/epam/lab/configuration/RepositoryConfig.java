@@ -4,12 +4,10 @@ package com.epam.lab.configuration;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 @Configuration
-@ComponentScan
 public class RepositoryConfig {
     @Bean
     public JdbcTemplate getJdbcTemplate() {

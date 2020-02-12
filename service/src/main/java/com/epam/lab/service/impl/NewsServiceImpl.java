@@ -106,31 +106,31 @@ public class NewsServiceImpl implements NewsService {
 
     @Override
     public void linkTags(NewsDTO news, List<TagDTO> tags) {
-        TagsLinkageException tle = new TagsLinkageException();
+        TagsLinkageException compoundException = new TagsLinkageException();
         for (TagDTO tag : tags) {
             try {
                 newsRepository.linkTag(modelMapper.map(news, News.class), modelMapper.map(tag, Tag.class));
             } catch (Exception e) {
-                tle.add(e);
+                compoundException.add(e);
             }
         }
-        if (!tle.getExceptions().isEmpty()) {
-            throw tle;
+        if (!compoundException.getExceptions().isEmpty()) {
+            throw compoundException;
         }
     }
 
     @Override
     public void unlinkTags(NewsDTO news, List<TagDTO> tags) {
-        TagsLinkageException tle = new TagsLinkageException();
+        TagsLinkageException compoundException = new TagsLinkageException();
         for (TagDTO tag : tags) {
             try {
                 newsRepository.unlinkTag(modelMapper.map(news, News.class), modelMapper.map(tag, Tag.class));
             } catch (Exception e) {
-                tle.add(e);
+                compoundException.add(e);
             }
         }
-        if (!tle.getExceptions().isEmpty()) {
-            throw tle;
+        if (!compoundException.getExceptions().isEmpty()) {
+            throw compoundException;
         }
     }
 }
