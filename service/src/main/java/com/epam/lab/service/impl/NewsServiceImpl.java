@@ -66,21 +66,7 @@ public class NewsServiceImpl implements NewsService {
     }
 
     private void sortByCriteria(List<News> news, SortCriteria criteria) {
-        news.sort((a, b) -> {
-            if (criteria == SortCriteria.AUTHOR) {
-                Author auth1 = a.getAuthor(), auth2 = b.getAuthor();
-                return auth1 == null ? 1 : auth1.compareTo(auth2);
-            }
-            if (criteria == SortCriteria.TAG) {
-                List<Tag> tags1 = a.getTags(), tags2 = b.getTags();
-                return tags1 == null ? 1 : tags2 == null ? -1 : tags2.size() - tags1.size();
-            }
-            if (criteria == SortCriteria.DATE) {
-                Date date1 = a.getCreationDate(), date2 = b.getCreationDate();
-                return date1 == null ? 1 : date1.compareTo(date2);
-            }
-            return 0;
-        });
+        news.sort(SortCriteriaComparator.getComparator(criteria));
     }
 
     @Override
