@@ -43,7 +43,6 @@ public class NewsServiceImplTest {
         News newsForRepository = new News().setTitle(title);
         Mockito.when(newsRepository.create(newsForRepository))
                 .thenReturn(new News().setTitle(title).setId(expectedId));
-
         NewsDTO inDTO = new NewsDTO().setTitle(title);
         NewsDTO outDTO = newsService.create(inDTO);
         Assert.assertEquals(outDTO.getId(), expectedId);

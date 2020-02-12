@@ -10,17 +10,26 @@ import com.epam.lab.specification.impl.NewsByIdSpecification;
 import com.epam.lab.specification.impl.NewsBySearchCriteriaSpecification;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Service
 public class NewsServiceImpl implements NewsService {
+    private NewsRepository newsRepository;
+    private ModelMapper modelMapper;
 
     @Autowired
-    private NewsRepository newsRepository;
+    public NewsServiceImpl(NewsRepository newsRepository) {
+        this.newsRepository = newsRepository;
+    }
+
     @Autowired
-    ModelMapper modelMapper;
+    public void setModelMapper(ModelMapper modelMapper) {
+        this.modelMapper = modelMapper;
+    }
 
     @Override
     public long countNews() {

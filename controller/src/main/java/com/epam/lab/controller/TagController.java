@@ -8,8 +8,12 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class TagController {
+    private TagService tagService;
+
     @Autowired
-    TagService tagService;
+    public TagController(TagService tagService) {
+        this.tagService = tagService;
+    }
 
     @ResponseStatus(code = HttpStatus.CREATED)
     @PostMapping(value = "/tags")

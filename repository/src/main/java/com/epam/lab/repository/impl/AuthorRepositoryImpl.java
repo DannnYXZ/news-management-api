@@ -8,13 +8,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Repository;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.sql.PreparedStatement;
 import java.util.List;
 
+@Repository
 public class AuthorRepositoryImpl implements EntityRepository<Author> {
-
     private JdbcTemplate jdbcTemplate;
     private static final String SQL_INSERT_AUTHOR = "INSERT INTO author (name, surname) VALUES (?, ?)";
     private static final String SQL_UPDATE_AUTHOR = "UPDATE author SET " +

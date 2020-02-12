@@ -8,14 +8,24 @@ import com.epam.lab.service.TagService;
 import com.epam.lab.specification.impl.TagsByIdSpecification;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class TagServiceImpl implements TagService {
-    @Autowired
     private EntityRepository<Tag> tagRepository;
+    private ModelMapper modelMapper;
+
     @Autowired
-    ModelMapper modelMapper;
+    public TagServiceImpl(EntityRepository<Tag> tagRepository) {
+        this.tagRepository = tagRepository;
+    }
+
+    @Autowired
+    public void setModelMapper(ModelMapper modelMapper) {
+        this.modelMapper = modelMapper;
+    }
 
     @Override
     public TagDTO create(TagDTO element) {

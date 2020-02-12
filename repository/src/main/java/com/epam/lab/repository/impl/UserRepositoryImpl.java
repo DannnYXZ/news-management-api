@@ -6,12 +6,13 @@ import com.epam.lab.repository.EntityRepository;
 import com.epam.lab.specification.EntitySpecification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.List;
 
+@Repository
 public class UserRepositoryImpl implements EntityRepository<User> {
-
     private JdbcTemplate jdbcTemplate;
     private static final String SQL_INSERT_USER =
             "INSERT INTO \"user\" (name, surname, login, password) VALUES (?, ?, ?, ?)";

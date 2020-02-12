@@ -8,9 +8,12 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class AuthorController {
+    private AuthorService authorService;
 
     @Autowired
-    AuthorService authorService;
+    AuthorController(AuthorService authorService) {
+        this.authorService = authorService;
+    }
 
     @ResponseStatus(code = HttpStatus.CREATED)
     @PostMapping(value = "/author")

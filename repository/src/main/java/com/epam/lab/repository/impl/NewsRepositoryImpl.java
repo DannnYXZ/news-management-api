@@ -17,18 +17,16 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
 import java.util.List;
 
+@Repository
 public class NewsRepositoryImpl implements NewsRepository {
-    @Autowired
     private EntityRepository<Tag> tagRepository;
-    @Autowired
     private EntityRepository<Author> authorRepository;
-
     private JdbcTemplate jdbcTemplate;
-
     private static final String SQL_INSERT_NEWS = "INSERT INTO news " +
             "(title, short_text, full_text, creation_date, modification_date) VALUES (?, ?, ?, ?, ?)";
     private static final String SQL_UPDATE_NEWS = "UPDATE news SET " +
@@ -45,8 +43,12 @@ public class NewsRepositoryImpl implements NewsRepository {
     private static final String SQL_REMOVE_NEWS_AUTHOR = "DELETE FROM news_author WHERE news_id = ? AND author_id = ?";
 
     @Autowired
-    public NewsRepositoryImpl(JdbcTemplate jdbcTemplate) {
+    public NewsRepositoryImpl(JdbcTemplate jdbcTemplate,
+                              EntityRepository<Tag> tagRepository,
+                              EntityRepository<Author> authorRepository) {
         this.jdbcTemplate = jdbcTemplate;
+        this.tagRepository = tagRepository;
+        this.authorRepository = authorRepository;
     }
 
     @Override
@@ -96,7 +98,7 @@ public class NewsRepositoryImpl implements NewsRepository {
 
     @Override
     public void delete(News news) {
-        if (jdbcTemplate.update(SQL_REMOVE_NEWS, news.getId()) == 0) {
+        if (isNotUpdated(jdbcTemplate.update(SQL_REMOVE_NEWS, news.getId()))) {
             throw new EntityNotFoundException("No such news.");
         }
     }

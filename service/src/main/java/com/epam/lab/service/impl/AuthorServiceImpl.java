@@ -8,14 +8,24 @@ import com.epam.lab.service.AuthorService;
 import com.epam.lab.specification.impl.AuthorsByIdSpecification;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class AuthorServiceImpl implements AuthorService {
+    private EntityRepository<Author> authorRepository;
+    private ModelMapper modelMapper;
+
     @Autowired
-    EntityRepository<Author> authorRepository;
+    public AuthorServiceImpl(EntityRepository<Author> authorRepository) {
+        this.authorRepository = authorRepository;
+    }
+
     @Autowired
-    ModelMapper modelMapper;
+    public void setModelMapper(ModelMapper modelMapper) {
+        this.modelMapper = modelMapper;
+    }
 
     @Override
     public AuthorDTO create(AuthorDTO element) {

@@ -14,9 +14,12 @@ import java.util.stream.Collectors;
 
 @RestController
 public class NewsController {
+    private NewsService newsService;
 
     @Autowired
-    NewsService newsService;
+    NewsController(NewsService newsService) {
+        this.newsService = newsService;
+    }
 
     @ResponseStatus(code = HttpStatus.CREATED)
     @PostMapping(value = "/news")
