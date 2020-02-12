@@ -30,7 +30,7 @@ public class AuthorServiceImpl implements AuthorService {
         if (!authors.isEmpty()) {
             return modelMapper.map(authors.get(0), AuthorDTO.class);
         } else {
-            throw new EntityNotFoundException("No suh author.");
+            throw new EntityNotFoundException("No such author.");
         }
     }
 

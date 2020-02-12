@@ -30,7 +30,8 @@ public class NewsServiceImpl implements NewsService {
     @Override
     public NewsDTO create(NewsDTO element) {
         News news = modelMapper.map(element, News.class);
-        news.setModificationDate(element.getCreationDate());
+        Date nowDate = new Date();
+        news.setModificationDate(nowDate).setCreationDate(nowDate);
         News identifiedNews = newsRepository.create(news);
         return modelMapper.map(identifiedNews, NewsDTO.class);
     }

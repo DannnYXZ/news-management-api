@@ -29,7 +29,7 @@ public class TagServiceImpl implements TagService {
         if (!tags.isEmpty()) {
             return modelMapper.map(tags.get(0), TagDTO.class);
         } else {
-            throw new EntityNotFoundException("No suh tag.");
+            throw new EntityNotFoundException("No such tag.");
         }
     }
 
