@@ -1,17 +1,18 @@
 package com.epam.lab.controller;
 
-import com.epam.lab.dto.*;
+import com.epam.lab.dto.AuthorDTO;
+import com.epam.lab.dto.NewsDTO;
+import com.epam.lab.dto.SearchCriteriaDTO;
+import com.epam.lab.dto.TagDTO;
 import com.epam.lab.service.NewsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
 public class NewsController {
 
     @Autowired

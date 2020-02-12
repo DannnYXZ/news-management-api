@@ -10,6 +10,8 @@ public interface EntityRepository<T> {
     void update(T entity);
     void delete(T entity);
     long count();
-
     List<T> query(EntitySpecification specification);
+    default boolean isNotUpdated(int updates) {
+        return updates == 0;
+    }
 }

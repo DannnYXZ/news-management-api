@@ -39,14 +39,14 @@ public class TagRepositoryImpl implements EntityRepository<Tag> {
 
     @Override
     public void update(Tag tag) {
-        if (jdbcTemplate.update(SQL_UPDATE_TAG, tag.getName(), tag.getId()) == 0) {
+        if (isNotUpdated(jdbcTemplate.update(SQL_UPDATE_TAG, tag.getName(), tag.getId()))) {
             throw new EntityNotFoundException("No such tag.");
         }
     }
 
     @Override
     public void delete(Tag tag) {
-        if (jdbcTemplate.update(SQL_REMOVE_TAG, tag.getId()) == 0) {
+        if (isNotUpdated(jdbcTemplate.update(SQL_REMOVE_TAG, tag.getId()))) {
             throw new EntityNotFoundException("No such tag.");
         }
     }

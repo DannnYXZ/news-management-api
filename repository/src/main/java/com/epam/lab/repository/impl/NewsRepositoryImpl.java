@@ -83,13 +83,13 @@ public class NewsRepositoryImpl implements NewsRepository {
 
     @Override
     public void update(News news) {
-        if (jdbcTemplate.update(SQL_UPDATE_NEWS,
+        if (isNotUpdated(jdbcTemplate.update(SQL_UPDATE_NEWS,
                 news.getTitle(),
                 news.getShortText(),
                 news.getFullText(),
                 news.getCreationDate(),
                 news.getModificationDate(),
-                news.getId()) == 0) {
+                news.getId()))) {
             throw new EntityNotFoundException("No such news.");
         }
     }
@@ -138,7 +138,7 @@ public class NewsRepositoryImpl implements NewsRepository {
 
     @Override
     public void unlinkAuthor(News news, Author author) {
-        if (jdbcTemplate.update(SQL_REMOVE_NEWS_AUTHOR, news.getId(), author.getId()) == 0) {
+        if (isNotUpdated(jdbcTemplate.update(SQL_REMOVE_NEWS_AUTHOR, news.getId(), author.getId()))) {
             throw new EntityNotFoundException("News " + news.getId() + "have no author " + author.getId() + ".");
         }
     }
@@ -156,7 +156,7 @@ public class NewsRepositoryImpl implements NewsRepository {
 
     @Override
     public void unlinkTag(News news, Tag tag) {
-        if (jdbcTemplate.update(SQL_REMOVE_NEWS_TAG, news.getId(), tag.getId()) == 0) {
+        if (isNotUpdated(jdbcTemplate.update(SQL_REMOVE_NEWS_TAG, news.getId(), tag.getId()))) {
             throw new EntityExistsException("No tag with id " + tag.getId() + " attached.");
         }
     }

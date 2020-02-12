@@ -42,14 +42,14 @@ public class AuthorRepositoryImpl implements EntityRepository<Author> {
 
     @Override
     public void update(Author author) {
-        if (jdbcTemplate.update(SQL_UPDATE_AUTHOR, author.getName(), author.getSurname(), author.getId()) == 0) {
+        if (isNotUpdated(jdbcTemplate.update(SQL_UPDATE_AUTHOR, author.getName(), author.getSurname(), author.getId()))) {
             throw new EntityNotFoundException("No such author.");
         }
     }
 
     @Override
     public void delete(Author author) {
-        if (jdbcTemplate.update(SQL_REMOVE_AUTHOR, author.getId()) == 0) {
+        if (isNotUpdated(jdbcTemplate.update(SQL_REMOVE_AUTHOR, author.getId()))) {
             throw new EntityNotFoundException("No such author.");
         }
     }
