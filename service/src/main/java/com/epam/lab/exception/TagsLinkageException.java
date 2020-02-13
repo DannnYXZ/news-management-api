@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TagsLinkageException extends RuntimeException {
+
     private List<Exception> exceptions;
 
     public TagsLinkageException() {

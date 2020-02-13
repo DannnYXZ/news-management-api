@@ -16,6 +16,7 @@ import java.util.List;
 
 @Repository
 public class TagRepositoryImpl implements EntityRepository<Tag> {
+
     private JdbcTemplate jdbcTemplate;
     private static final String SQL_INSERT_TAG = "INSERT INTO tag (name) VALUES (?)";
     private static final String SQL_UPDATE_TAG = "UPDATE tag SET name = coalesce(?, name) WHERE id = ?";
@@ -59,9 +60,9 @@ public class TagRepositoryImpl implements EntityRepository<Tag> {
     @Override
     public List<Tag> query(EntitySpecification specification) {
         List<Tag> tags = jdbcTemplate.query(specification.specified(),
-                (rs, rowNum) -> new Tag()
-                        .setId(rs.getInt("id"))
-                        .setName(rs.getString("name")));
+            (rs, rowNum) -> new Tag()
+                .setId(rs.getInt("id"))
+                .setName(rs.getString("name")));
         return tags;
     }
 }

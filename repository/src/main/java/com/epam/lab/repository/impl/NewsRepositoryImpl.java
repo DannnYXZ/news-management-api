@@ -25,17 +25,18 @@ import java.util.List;
 
 @Repository
 public class NewsRepositoryImpl implements NewsRepository {
+
     private EntityRepository<Tag> tagRepository;
     private EntityRepository<Author> authorRepository;
     private JdbcTemplate jdbcTemplate;
     private static final String SQL_INSERT_NEWS = "INSERT INTO news " +
-            "(title, short_text, full_text, creation_date, modification_date) VALUES (?, ?, ?, ?, ?)";
+        "(title, short_text, full_text, creation_date, modification_date) VALUES (?, ?, ?, ?, ?)";
     private static final String SQL_UPDATE_NEWS = "UPDATE news SET " +
-            "title = coalesce(?, title), " +
-            "short_text = coalesce(?, short_text), " +
-            "full_text = coalesce(?, full_text), " +
-            "creation_date = coalesce(?, creation_date), " +
-            "modification_date = coalesce(?, modification_date) WHERE id = ?";
+        "title = coalesce(?, title), " +
+        "short_text = coalesce(?, short_text), " +
+        "full_text = coalesce(?, full_text), " +
+        "creation_date = coalesce(?, creation_date), " +
+        "modification_date = coalesce(?, modification_date) WHERE id = ?";
     private static final String SQL_REMOVE_NEWS = "DELETE FROM news WHERE id = ?";
     private static final String SQL_COUNT_NEWS = "SELECT COUNT(*) FROM news";
     private static final String SQL_INSERT_NEWS_TAG = "INSERT INTO news_tag (news_id, tag_id) VALUES (?, ?)";
@@ -45,8 +46,8 @@ public class NewsRepositoryImpl implements NewsRepository {
 
     @Autowired
     public NewsRepositoryImpl(JdbcTemplate jdbcTemplate,
-                              EntityRepository<Tag> tagRepository,
-                              EntityRepository<Author> authorRepository) {
+        EntityRepository<Tag> tagRepository,
+        EntityRepository<Author> authorRepository) {
         this.jdbcTemplate = jdbcTemplate;
         this.tagRepository = tagRepository;
         this.authorRepository = authorRepository;
@@ -98,12 +99,12 @@ public class NewsRepositoryImpl implements NewsRepository {
     @Override
     public void update(News news) {
         if (isNotUpdated(jdbcTemplate.update(SQL_UPDATE_NEWS,
-                news.getTitle(),
-                news.getShortText(),
-                news.getFullText(),
-                news.getCreationDate(),
-                news.getModificationDate(),
-                news.getId()))) {
+            news.getTitle(),
+            news.getShortText(),
+            news.getFullText(),
+            news.getCreationDate(),
+            news.getModificationDate(),
+            news.getId()))) {
             throw new EntityNotFoundException("No such news.");
         }
     }
@@ -126,13 +127,13 @@ public class NewsRepositoryImpl implements NewsRepository {
     @Override
     public List<News> query(EntitySpecification specification) {
         List<News> news = jdbcTemplate.query(specification.specified(),
-                (rs, rowNum) -> new News()
-                        .setId(rs.getInt("id"))
-                        .setTitle(rs.getString("title"))
-                        .setShortText(rs.getString("short_text"))
-                        .setFullText(rs.getString("full_text"))
-                        .setCreationDate(rs.getDate("creation_date"))
-                        .setModificationDate(rs.getDate("modification_date")));
+            (rs, rowNum) -> new News()
+                .setId(rs.getInt("id"))
+                .setTitle(rs.getString("title"))
+                .setShortText(rs.getString("short_text"))
+                .setFullText(rs.getString("full_text"))
+                .setCreationDate(rs.getDate("creation_date"))
+                .setModificationDate(rs.getDate("modification_date")));
         for (News item : news) {
             item.setTags(tagRepository.query(new TagsByNewsIdSpecification(item.getId())));
             List<Author> authors = authorRepository.query(new AuthorsByNewsIdSpecification(item.getId()));

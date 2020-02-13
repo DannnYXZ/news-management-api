@@ -26,9 +26,7 @@ public class NewsByIdSpecification implements EntitySpecification {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         NewsByIdSpecification that = (NewsByIdSpecification) o;
-
         return id == that.id;
     }
 

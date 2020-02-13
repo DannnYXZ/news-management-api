@@ -1,6 +1,7 @@
 package com.epam.lab.exception;
 
 public class EntityNotFoundException extends RuntimeException {
+
     public EntityNotFoundException() {
         super();
     }

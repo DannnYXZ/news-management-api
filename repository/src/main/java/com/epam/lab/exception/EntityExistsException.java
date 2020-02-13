@@ -1,6 +1,7 @@
 package com.epam.lab.exception;
 
 public class EntityExistsException extends RuntimeException {
+
     public EntityExistsException() {
         super();
     }

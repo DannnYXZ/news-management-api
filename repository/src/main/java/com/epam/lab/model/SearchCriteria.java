@@ -3,6 +3,7 @@ package com.epam.lab.model;
 import java.util.List;
 
 public class SearchCriteria {
+
     private Author author;
     private List<Tag> tags;
     private SortCriteria sort;

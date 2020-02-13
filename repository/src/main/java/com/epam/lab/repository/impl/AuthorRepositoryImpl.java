@@ -15,11 +15,12 @@ import java.util.List;
 
 @Repository
 public class AuthorRepositoryImpl implements EntityRepository<Author> {
+
     private JdbcTemplate jdbcTemplate;
     private static final String SQL_INSERT_AUTHOR = "INSERT INTO author (name, surname) VALUES (?, ?)";
     private static final String SQL_UPDATE_AUTHOR = "UPDATE author SET " +
-            "name = coalesce(?, name), " +
-            "surname = coalesce(?, surname) WHERE id = ?";
+        "name = coalesce(?, name), " +
+        "surname = coalesce(?, surname) WHERE id = ?";
     private static final String SQL_REMOVE_AUTHOR = "DELETE FROM author WHERE id = ?";
 
     @Autowired
@@ -42,7 +43,8 @@ public class AuthorRepositoryImpl implements EntityRepository<Author> {
 
     @Override
     public void update(Author author) {
-        if (isNotUpdated(jdbcTemplate.update(SQL_UPDATE_AUTHOR, author.getName(), author.getSurname(), author.getId()))) {
+        if (isNotUpdated(
+            jdbcTemplate.update(SQL_UPDATE_AUTHOR, author.getName(), author.getSurname(), author.getId()))) {
             throw new EntityNotFoundException("No such author.");
         }
     }
@@ -62,10 +64,10 @@ public class AuthorRepositoryImpl implements EntityRepository<Author> {
     @Override
     public List<Author> query(EntitySpecification specification) {
         List<Author> authors = jdbcTemplate.query(specification.specified(),
-                (rs, rowNum) -> new Author()
-                        .setId(rs.getInt("id"))
-                        .setName(rs.getString("name"))
-                        .setSurname(rs.getString("surname")));
+            (rs, rowNum) -> new Author()
+                .setId(rs.getInt("id"))
+                .setName(rs.getString("name"))
+                .setSurname(rs.getString("surname")));
         return authors;
     }
 }

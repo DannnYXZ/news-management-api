@@ -8,6 +8,7 @@ import com.epam.lab.model.Tag;
 import java.util.*;
 
 class SortCriteriaComparator {
+
     private static Map<SortCriteria, Comparator<News>> comparators = new HashMap<>();
 
     static {

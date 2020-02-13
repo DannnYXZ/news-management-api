@@ -31,10 +31,11 @@ SET default_with_oids = false;
 -- Name: author; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE IF NOT EXISTS public.author (
-                               id bigint NOT NULL,
-                               name character varying(30) NOT NULL,
-                               surname character varying(30) NOT NULL
+CREATE TABLE IF NOT EXISTS public.author
+(
+    id      bigint                NOT NULL,
+    name    character varying(30) NOT NULL,
+    surname character varying(30) NOT NULL
 );
 
 
@@ -42,32 +43,37 @@ CREATE TABLE IF NOT EXISTS public.author (
 -- Name: author_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE public.author_id_seq
-    START WITH 1
+CREATE
+SEQUENCE public.author_id_seq
+    START
+WITH 1
     INCREMENT BY 1
     NO MINVALUE
     NO MAXVALUE
-    CACHE 1;
+    CACHE
+1;
 
 
 --
 -- Name: author_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE public.author_id_seq OWNED BY public.author.id;
+ALTER
+SEQUENCE public.author_id_seq OWNED BY public.author.id;
 
 
 --
 -- Name: news; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE IF NOT EXISTS public.news (
-                             id bigint NOT NULL,
-                             title character varying(200) NOT NULL,
-                             short_text character varying(500) NOT NULL,
-                             full_text character varying(2000) NOT NULL,
-                             creation_date date NOT NULL,
-                             modification_date date NOT NULL
+CREATE TABLE IF NOT EXISTS public.news
+(
+    id                bigint                  NOT NULL,
+    title             character varying(200)  NOT NULL,
+    short_text        character varying(500)  NOT NULL,
+    full_text         character varying(2000) NOT NULL,
+    creation_date     date                    NOT NULL,
+    modification_date date                    NOT NULL
 );
 
 
@@ -75,9 +81,10 @@ CREATE TABLE IF NOT EXISTS public.news (
 -- Name: news_author; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE IF NOT EXISTS public.news_author (
-                                    news_id bigint NOT NULL,
-                                    author_id bigint NOT NULL
+CREATE TABLE IF NOT EXISTS public.news_author
+(
+    news_id   bigint NOT NULL,
+    author_id bigint NOT NULL
 );
 
 
@@ -85,28 +92,33 @@ CREATE TABLE IF NOT EXISTS public.news_author (
 -- Name: news_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE public.news_id_seq
-    START WITH 1
+CREATE
+SEQUENCE public.news_id_seq
+    START
+WITH 1
     INCREMENT BY 1
     NO MINVALUE
     NO MAXVALUE
-    CACHE 1;
+    CACHE
+1;
 
 
 --
 -- Name: news_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE public.news_id_seq OWNED BY public.news.id;
+ALTER
+SEQUENCE public.news_id_seq OWNED BY public.news.id;
 
 
 --
 -- Name: news_tag; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE IF NOT EXISTS public.news_tag (
-                                 news_id bigint NOT NULL,
-                                 tag_id bigint NOT NULL
+CREATE TABLE IF NOT EXISTS public.news_tag
+(
+    news_id bigint NOT NULL,
+    tag_id  bigint NOT NULL
 );
 
 
@@ -114,9 +126,10 @@ CREATE TABLE IF NOT EXISTS public.news_tag (
 -- Name: roles; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE IF NOT EXISTS public.roles (
-                              user_id bigint NOT NULL,
-                              role_name character varying(30) NOT NULL
+CREATE TABLE IF NOT EXISTS public.roles
+(
+    user_id   bigint                NOT NULL,
+    role_name character varying(30) NOT NULL
 );
 
 
@@ -124,9 +137,10 @@ CREATE TABLE IF NOT EXISTS public.roles (
 -- Name: tag; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE IF NOT EXISTS public.tag (
-                            id bigint NOT NULL,
-                            name character varying(30) NOT NULL
+CREATE TABLE IF NOT EXISTS public.tag
+(
+    id   bigint                NOT NULL,
+    name character varying(30) NOT NULL
 );
 
 
@@ -134,31 +148,36 @@ CREATE TABLE IF NOT EXISTS public.tag (
 -- Name: tag_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE public.tag_id_seq
-    START WITH 1
+CREATE
+SEQUENCE public.tag_id_seq
+    START
+WITH 1
     INCREMENT BY 1
     NO MINVALUE
     NO MAXVALUE
-    CACHE 1;
+    CACHE
+1;
 
 
 --
 -- Name: tag_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE public.tag_id_seq OWNED BY public.tag.id;
+ALTER
+SEQUENCE public.tag_id_seq OWNED BY public.tag.id;
 
 
 --
 -- Name: user; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE IF NOT EXISTS public."user" (
-                               id bigint NOT NULL,
-                               name character varying(20) NOT NULL,
-                               surname character varying(20) NOT NULL,
-                               login character varying(30) NOT NULL,
-                               password character varying(30) NOT NULL
+CREATE TABLE IF NOT EXISTS public."user"
+(
+    id       bigint                NOT NULL,
+    name     character varying(20) NOT NULL,
+    surname  character varying(20) NOT NULL,
+    login    character varying(30) NOT NULL,
+    password character varying(30) NOT NULL
 );
 
 
@@ -166,19 +185,23 @@ CREATE TABLE IF NOT EXISTS public."user" (
 -- Name: user_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE public.user_id_seq
-    START WITH 1
+CREATE
+SEQUENCE public.user_id_seq
+    START
+WITH 1
     INCREMENT BY 1
     NO MINVALUE
     NO MAXVALUE
-    CACHE 1;
+    CACHE
+1;
 
 
 --
 -- Name: user_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE public.user_id_seq OWNED BY public."user".id;
+ALTER
+SEQUENCE public.user_id_seq OWNED BY public."user".id;
 
 
 --
@@ -266,7 +289,8 @@ ALTER TABLE ONLY public."user"
 --
 
 ALTER TABLE ONLY public.news_author
-    ADD CONSTRAINT author_id FOREIGN KEY (author_id) REFERENCES public.author(id) ON DELETE CASCADE;
+    ADD CONSTRAINT author_id FOREIGN KEY (author_id) REFERENCES public.author(id) ON
+DELETE CASCADE;
 
 
 --
@@ -274,7 +298,8 @@ ALTER TABLE ONLY public.news_author
 --
 
 ALTER TABLE ONLY public.news_author
-    ADD CONSTRAINT news_id FOREIGN KEY (news_id) REFERENCES public.news(id) ON DELETE CASCADE;
+    ADD CONSTRAINT news_id FOREIGN KEY (news_id) REFERENCES public.news(id) ON
+DELETE CASCADE;
 
 
 --
@@ -282,7 +307,8 @@ ALTER TABLE ONLY public.news_author
 --
 
 ALTER TABLE ONLY public.news_tag
-    ADD CONSTRAINT news_id FOREIGN KEY (news_id) REFERENCES public.news(id) ON DELETE CASCADE;
+    ADD CONSTRAINT news_id FOREIGN KEY (news_id) REFERENCES public.news(id) ON
+DELETE CASCADE;
 
 
 --
@@ -290,7 +316,8 @@ ALTER TABLE ONLY public.news_tag
 --
 
 ALTER TABLE ONLY public.news_tag
-    ADD CONSTRAINT tag_id FOREIGN KEY (tag_id) REFERENCES public.tag(id) ON DELETE CASCADE;
+    ADD CONSTRAINT tag_id FOREIGN KEY (tag_id) REFERENCES public.tag(id) ON
+DELETE CASCADE;
 
 
 --

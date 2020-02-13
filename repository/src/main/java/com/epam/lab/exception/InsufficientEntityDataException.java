@@ -1,6 +1,7 @@
 package com.epam.lab.exception;
 
 public class InsufficientEntityDataException extends RuntimeException {
+
     public InsufficientEntityDataException() {
         super();
     }

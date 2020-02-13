@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 public class NewsDTO {
+
     private long id;
     private String title;
     private String shortText;
@@ -102,7 +103,8 @@ public class NewsDTO {
         if (fullText != null ? !fullText.equals(newsDTO.fullText) : newsDTO.fullText != null) return false;
         if (creationDate != null ? !creationDate.equals(newsDTO.creationDate) : newsDTO.creationDate != null)
             return false;
-        if (modificationDate != null ? !modificationDate.equals(newsDTO.modificationDate) : newsDTO.modificationDate != null)
+        if (modificationDate != null ? !modificationDate.equals(newsDTO.modificationDate)
+            : newsDTO.modificationDate != null)
             return false;
         if (author != null ? !author.equals(newsDTO.author) : newsDTO.author != null) return false;
         return tags != null ? tags.equals(newsDTO.tags) : newsDTO.tags == null;

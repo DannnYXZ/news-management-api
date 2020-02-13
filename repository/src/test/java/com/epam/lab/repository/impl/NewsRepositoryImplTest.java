@@ -28,6 +28,7 @@ import java.util.*;
 @RunWith(JUnitParamsRunner.class)
 @ContextConfiguration(classes = {RepositoryTestConfig.class}, loader = AnnotationConfigContextLoader.class)
 public class NewsRepositoryImplTest {
+
     @ClassRule
     public static final SpringClassRule scr = new SpringClassRule();
     @Rule
@@ -58,30 +59,33 @@ public class NewsRepositoryImplTest {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
         return new Object[]{
-                new Object[]{17L, new News().setId(17)
-                        .setTitle("Larry King says 26-year age gap, religion took 'its toll' on marriage, ultimately led to divorce")
-                        .setShortText("Larry King is speaking out about the downfall of his marriage to Shawn Southwick, saying religion and their 26-year-year age gap eventually took \"its toll\" on their relationship.")
-                        .setFullText("“I got married a lot,” he said. “But in my head, I’m not a marrying guy. When I grew up, nobody lived together. If you fell in love, you got married. And so I married the ones that I loved. But what I loved at 20 is not what I loved at 30 and what I loved at 30 is not what I loved at 40.”")
-                        .setCreationDate(dateFormat.parse("2018-02-12 21:00"))
-                        .setModificationDate(dateFormat.parse("2018-02-12 21:00"))
-                        .setAuthor(new Author().setId(1).setName("Ziad").setSurname("Smith"))
-                        .setTags(new ArrayList<>(
-                        Arrays.asList(
-                                new Tag().setId(1).setName("Travelling"),
-                                new Tag().setId(10).setName("Food"),
-                                new Tag().setId(11).setName("UFO"))))},
-                new Object[]{4L, new News().setId(4)
-                        .setTitle("'Fox & Friends' on Nancy Pelosi's attempt to 'mind meld with AOC' at SOTU")
-                        .setShortText("\"Fox & Friends\" hosts on Nancy Pelosi's behavior at the State of the Union address.")
-                        .setFullText("video")
-                        .setCreationDate(dateFormat.parse("2003-07-02 21:00"))
-                        .setModificationDate(dateFormat.parse("2003-07-02 21:00"))
-                        .setAuthor(new Author().setId(14).setName("Kate").setSurname("Lopez"))
-                        .setTags(new ArrayList<>(
-                        Arrays.asList(
-                                new Tag().setId(11).setName("UFO"),
-                                new Tag().setId(14).setName("Health"),
-                                new Tag().setId(18).setName("Extreme"))))}
+            new Object[]{17L, new News().setId(17)
+                .setTitle(
+                    "Larry King says 26-year age gap, religion took 'its toll' on marriage, ultimately led to divorce")
+                .setShortText(
+                    "Larry King is speaking out about the downfall of his marriage to Shawn Southwick, saying religion and their 26-year-year age gap eventually took \"its toll\" on their relationship.")
+                .setFullText(
+                    "“I got married a lot,” he said. “But in my head, I’m not a marrying guy. When I grew up, nobody lived together. If you fell in love, you got married. And so I married the ones that I loved. But what I loved at 20 is not what I loved at 30 and what I loved at 30 is not what I loved at 40.”")
+                .setCreationDate(dateFormat.parse("2018-02-12 21:00"))
+                .setModificationDate(dateFormat.parse("2018-02-12 21:00"))
+                .setAuthor(new Author().setId(1).setName("Ziad").setSurname("Smith"))
+                .setTags(new ArrayList<>(
+                Arrays.asList(
+                    new Tag().setId(1).setName("Travelling"),
+                    new Tag().setId(10).setName("Food"),
+                    new Tag().setId(11).setName("UFO"))))},
+            new Object[]{4L, new News().setId(4)
+                .setTitle("'Fox & Friends' on Nancy Pelosi's attempt to 'mind meld with AOC' at SOTU")
+                .setShortText("\"Fox & Friends\" hosts on Nancy Pelosi's behavior at the State of the Union address.")
+                .setFullText("video")
+                .setCreationDate(dateFormat.parse("2003-07-02 21:00"))
+                .setModificationDate(dateFormat.parse("2003-07-02 21:00"))
+                .setAuthor(new Author().setId(14).setName("Kate").setSurname("Lopez"))
+                .setTags(new ArrayList<>(
+                Arrays.asList(
+                    new Tag().setId(11).setName("UFO"),
+                    new Tag().setId(14).setName("Health"),
+                    new Tag().setId(18).setName("Extreme"))))}
         };
     }
 
@@ -94,8 +98,8 @@ public class NewsRepositoryImplTest {
 
     public Object[] parametersForTestReadNewsByIdEmptyList() {
         return new Object[]{
-                new Object[]{-1L},
-                new Object[]{100L}
+            new Object[]{-1L},
+            new Object[]{100L}
         };
     }
 
@@ -124,29 +128,29 @@ public class NewsRepositoryImplTest {
     @Test
     public void testCreateNews() {
         News identifiedNews = newsRepository.create(new News()
-                .setAuthor(new Author().setName("Salami").setSurname("Greg"))
-                .setTitle("Title")
-                .setShortText("Hmmmm")
-                .setFullText("Hmmmmmmmmmmmmmmmmmm")
-                .setModificationDate(new Date())
-                .setCreationDate(new Date()));
+            .setAuthor(new Author().setName("Salami").setSurname("Greg"))
+            .setTitle("Title")
+            .setShortText("Hmmmm")
+            .setFullText("Hmmmmmmmmmmmmmmmmmm")
+            .setModificationDate(new Date())
+            .setCreationDate(new Date()));
         Assert.assertTrue(identifiedNews.getId() != 0);
     }
 
     @Test(expected = InsufficientEntityDataException.class)
     public void testCreateNewsInsufficientDataException() {
         newsRepository.create(new News()
-                .setAuthor(new Author().setName("Salami").setSurname("Greg"))
-                .setModificationDate(new Date())
-                .setCreationDate(new Date()));
+            .setAuthor(new Author().setName("Salami").setSurname("Greg"))
+            .setModificationDate(new Date())
+            .setCreationDate(new Date()));
     }
 
     @Test
     public void testUpdateNews() {
         try {
             newsRepository.update(new News()
-                    .setId(1)
-                    .setTitle("So lets update title."));
+                .setId(1)
+                .setTitle("So lets update title."));
         } catch (Exception e) {
             Assert.fail();
         }

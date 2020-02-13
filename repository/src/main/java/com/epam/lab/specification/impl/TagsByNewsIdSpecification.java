@@ -8,7 +8,7 @@ import java.sql.PreparedStatement;
 public class TagsByNewsIdSpecification implements EntitySpecification {
 
     private static final String SQL_SELECT_NEWS_TAGS = "SELECT * FROM tag INNER JOIN " +
-            "news_tag ON news_tag.news_id = ? AND tag.id = news_tag.tag_id";
+        "news_tag ON news_tag.news_id = ? AND tag.id = news_tag.tag_id";
     private long id;
 
     public TagsByNewsIdSpecification(long id) {

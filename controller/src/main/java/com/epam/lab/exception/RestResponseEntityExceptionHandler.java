@@ -22,9 +22,9 @@ class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler 
 
     @Override
     protected ResponseEntity<Object> handleNoHandlerFoundException(NoHandlerFoundException ex,
-                                                                   HttpHeaders headers,
-                                                                   HttpStatus status,
-                                                                   WebRequest request) {
+        HttpHeaders headers,
+        HttpStatus status,
+        WebRequest request) {
         Map<String, String> responseBody = new HashMap<>();
         responseBody.put("path", ((ServletWebRequest) request).getRequest().getRequestURI());
         responseBody.put("message", "The URL you have reached is not in service at this time (404).");
@@ -32,7 +32,8 @@ class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler 
     }
 
     @ExceptionHandler({MethodArgumentTypeMismatchException.class})
-    public ResponseEntity<Object> handleMethodArgumentTypeMismatch(MethodArgumentTypeMismatchException ex, WebRequest request) {
+    public ResponseEntity<Object> handleMethodArgumentTypeMismatch(MethodArgumentTypeMismatchException ex,
+        WebRequest request) {
         String error = "wrong " + ex.getName() + " parameter format";
         ApiErrorDTO apiError = new ApiErrorDTO(HttpStatus.BAD_REQUEST, null, error);
         return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getStatus());
@@ -40,13 +41,15 @@ class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler 
 
     @ExceptionHandler({EntityExistsException.class})
     public ResponseEntity<Object> handleEntityExists(RuntimeException ex, WebRequest request) {
-        ApiErrorDTO apiError = new ApiErrorDTO(HttpStatus.BAD_REQUEST, "Entity already exists.", ex.getLocalizedMessage());
+        ApiErrorDTO apiError = new ApiErrorDTO(HttpStatus.BAD_REQUEST, "Entity already exists.",
+            ex.getLocalizedMessage());
         return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getStatus());
     }
 
     @ExceptionHandler({InsufficientEntityDataException.class})
     public ResponseEntity<Object> handleInsufficientData(RuntimeException ex, WebRequest request) {
-        ApiErrorDTO apiError = new ApiErrorDTO(HttpStatus.BAD_REQUEST, "Something is missing :(", ex.getLocalizedMessage());
+        ApiErrorDTO apiError = new ApiErrorDTO(HttpStatus.BAD_REQUEST, "Something is missing :(",
+            ex.getLocalizedMessage());
         return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getStatus());
     }
 

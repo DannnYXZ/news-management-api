@@ -24,6 +24,7 @@ import java.util.List;
 @RunWith(MockitoJUnitRunner.class)
 @ContextConfiguration(classes = {ServiceTestConfiguration.class})
 public class NewsServiceImplTest {
+
     @ClassRule
     public static final SpringClassRule scr = new SpringClassRule();
     @Rule
@@ -43,7 +44,7 @@ public class NewsServiceImplTest {
         long expectedId = 333;
         String title = "Not Identified";
         Mockito.when(newsRepository.create(Mockito.any(News.class)))
-                .thenReturn(new News().setId(expectedId));
+            .thenReturn(new News().setId(expectedId));
         NewsDTO inDTO = new NewsDTO().setTitle(title);
         NewsDTO outDTO = newsService.create(inDTO);
         Assert.assertEquals(outDTO.getId(), expectedId);
@@ -52,20 +53,21 @@ public class NewsServiceImplTest {
     @Test
     public void testReadAllNewsAndSortByAuthor() {
         SearchCriteria repositoryCriteria = new SearchCriteria().setSort(SortCriteria.AUTHOR);
-        Mockito.when(newsRepository.query(new NewsBySearchCriteriaSpecification(repositoryCriteria))).thenReturn(Arrays.asList(
+        Mockito.when(newsRepository.query(new NewsBySearchCriteriaSpecification(repositoryCriteria)))
+            .thenReturn(Arrays.asList(
                 new News().setAuthor(new Author().setName("D")),
                 new News().setAuthor(new Author().setName("C")),
                 new News().setAuthor(new Author().setName("B")),
                 new News().setAuthor(new Author().setName("A"))
-        ));
+            ));
 
         SearchCriteriaDTO inCriteria = new SearchCriteriaDTO().setSort(SortCriteriaDTO.AUTHOR);
         List<NewsDTO> actualNews = newsService.readNews(inCriteria);
         List<NewsDTO> expectedNews = Arrays.asList(
-                new NewsDTO().setAuthor(new AuthorDTO().setName("A")),
-                new NewsDTO().setAuthor(new AuthorDTO().setName("B")),
-                new NewsDTO().setAuthor(new AuthorDTO().setName("C")),
-                new NewsDTO().setAuthor(new AuthorDTO().setName("D"))
+            new NewsDTO().setAuthor(new AuthorDTO().setName("A")),
+            new NewsDTO().setAuthor(new AuthorDTO().setName("B")),
+            new NewsDTO().setAuthor(new AuthorDTO().setName("C")),
+            new NewsDTO().setAuthor(new AuthorDTO().setName("D"))
         );
         Assert.assertEquals(actualNews, expectedNews);
     }
@@ -73,15 +75,15 @@ public class NewsServiceImplTest {
     @Test
     public void testReadNewsById() {
         Mockito.when(newsRepository.query(new NewsByIdSpecification(35))).thenReturn(
-                Arrays.asList(new News()
-                        .setId(35)
-                        .setAuthor(new Author().setName("Bazinga"))
-                        .setTitle("Ukulele"))
+            Arrays.asList(new News()
+                .setId(35)
+                .setAuthor(new Author().setName("Bazinga"))
+                .setTitle("Ukulele"))
         );
         NewsDTO expectedNews = new NewsDTO()
-                .setId(35)
-                .setAuthor(new AuthorDTO().setName("Bazinga"))
-                .setTitle("Ukulele");
+            .setId(35)
+            .setAuthor(new AuthorDTO().setName("Bazinga"))
+            .setTitle("Ukulele");
         NewsDTO actualNews = newsService.read(new NewsDTO().setId(35));
         Assert.assertEquals(actualNews, expectedNews);
     }
@@ -93,7 +95,7 @@ public class NewsServiceImplTest {
         NewsDTO inDTO = new NewsDTO().setId(targetId).setTitle(targetTitle);
         newsService.delete(inDTO);
         Mockito.verify(newsRepository, Mockito.times(1))
-                .delete(new News().setId(targetId).setTitle(targetTitle));
+            .delete(new News().setId(targetId).setTitle(targetTitle));
     }
 
     @Test
@@ -116,10 +118,10 @@ public class NewsServiceImplTest {
     public void testLinkTags() {
         NewsDTO inNewsDTO = new NewsDTO().setId(777);
         List<TagDTO> tagsDTO = Arrays.asList(
-                new TagDTO().setId(121),
-                new TagDTO().setId(232),
-                new TagDTO().setId(343),
-                new TagDTO().setId(454)
+            new TagDTO().setId(121),
+            new TagDTO().setId(232),
+            new TagDTO().setId(343),
+            new TagDTO().setId(454)
         );
         newsService.linkTags(inNewsDTO, tagsDTO);
         Mockito.verify(newsRepository, Mockito.times(4)).linkTag(newsCaptor.capture(), tagsCaptor.capture());
@@ -129,28 +131,28 @@ public class NewsServiceImplTest {
     public void testUnlinkTags() {
         NewsDTO inNewsDTO = new NewsDTO().setId(777);
         List<TagDTO> tagsDTO = Arrays.asList(
-                new TagDTO().setId(121),
-                new TagDTO().setId(555),
-                new TagDTO().setId(343),
-                new TagDTO().setId(454)
+            new TagDTO().setId(121),
+            new TagDTO().setId(555),
+            new TagDTO().setId(343),
+            new TagDTO().setId(454)
         );
         newsService.unlinkTags(inNewsDTO, tagsDTO);
         Mockito.verify(newsRepository, Mockito.times(4))
-                .unlinkTag(newsCaptor.capture(), tagsCaptor.capture());
+            .unlinkTag(newsCaptor.capture(), tagsCaptor.capture());
     }
 
     @Test(expected = TagsLinkageException.class)
     public void testUnlinkTagsException() {
         NewsDTO inNewsDTO = new NewsDTO().setId(777);
         List<TagDTO> inTagsDTO = Arrays.asList(
-                new TagDTO().setId(121),
-                new TagDTO().setId(232),
-                new TagDTO().setId(343),
-                new TagDTO().setId(454)
+            new TagDTO().setId(121),
+            new TagDTO().setId(232),
+            new TagDTO().setId(343),
+            new TagDTO().setId(454)
         );
         Mockito.doThrow(EntityNotFoundException.class)
-                .when(newsRepository)
-                .unlinkTag(new News().setId(777), new Tag().setId(232));
+            .when(newsRepository)
+            .unlinkTag(new News().setId(777), new Tag().setId(232));
         newsService.unlinkTags(inNewsDTO, inTagsDTO);
     }
 
@@ -161,7 +163,7 @@ public class NewsServiceImplTest {
 
         newsService.linkAuthor(inNewsDTO, inAuthorDTO);
         Mockito.verify(newsRepository, Mockito.times(1))
-                .linkAuthor(newsCaptor.capture(), authorCaptor.capture());
+            .linkAuthor(newsCaptor.capture(), authorCaptor.capture());
     }
 
     @Test
@@ -171,6 +173,6 @@ public class NewsServiceImplTest {
 
         newsService.unlinkAuthor(inNewsDTO, inAuthorDTO);
         Mockito.verify(newsRepository, Mockito.times(1))
-                .unlinkAuthor(newsCaptor.capture(), authorCaptor.capture());
+            .unlinkAuthor(newsCaptor.capture(), authorCaptor.capture());
     }
 }

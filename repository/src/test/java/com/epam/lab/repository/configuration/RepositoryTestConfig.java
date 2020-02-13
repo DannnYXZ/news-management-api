@@ -14,6 +14,7 @@ import java.io.IOException;
 @Configuration
 @ComponentScan(basePackages = "com.epam.lab")
 public class RepositoryTestConfig {
+
     @Bean
     @Primary
     DataSource getDataSource() {

@@ -1,6 +1,7 @@
 package com.epam.lab.model;
 
 public class Tag implements Comparable<Tag> {
+
     private long id;
     private String name;
 

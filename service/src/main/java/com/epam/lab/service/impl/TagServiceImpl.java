@@ -14,6 +14,7 @@ import java.util.List;
 
 @Service
 public class TagServiceImpl implements TagService {
+
     private EntityRepository<Tag> tagRepository;
     private ModelMapper modelMapper;
 

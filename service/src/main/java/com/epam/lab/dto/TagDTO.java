@@ -1,6 +1,7 @@
 package com.epam.lab.dto;
 
 public class TagDTO {
+
     private long id;
     private String name;
 

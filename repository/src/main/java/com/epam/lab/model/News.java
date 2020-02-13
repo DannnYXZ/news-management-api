@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 public class News {
+
     private long id;
     private String title;
     private String shortText;

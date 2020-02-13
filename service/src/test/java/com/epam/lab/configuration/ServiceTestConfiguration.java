@@ -7,6 +7,7 @@ import org.springframework.context.annotation.*;
 @Configuration
 @ComponentScan(basePackages = "com.epam.lab")
 public class ServiceTestConfiguration {
+
     @Bean
     @Primary
     public NewsRepository getNewsRepositoryMock() {

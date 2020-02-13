@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class NewsServiceImpl implements NewsService {
+
     private NewsRepository newsRepository;
     private ModelMapper modelMapper;
 

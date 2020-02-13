@@ -3,6 +3,7 @@ package com.epam.lab.dto;
 import java.util.List;
 
 public class SearchCriteriaDTO {
+
     private AuthorDTO author;
     private List<TagDTO> tags;
     private SortCriteriaDTO sort;

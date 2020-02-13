@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 
 @RestController
 public class NewsController {
+
     private NewsService newsService;
 
     @Autowired
