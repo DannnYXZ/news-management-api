@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
 @Service
@@ -90,12 +91,11 @@ public class NewsServiceImpl implements NewsService {
         newsRepository.unlinkAuthor(modelMapper.map(news, News.class), modelMapper.map(author, Author.class));
     }
 
-    @Override
-    public void linkTags(NewsDTO news, List<TagDTO> tags) {
+    private void processTags(BiConsumer<News, Tag> function, NewsDTO news, List<TagDTO> tags) {
         TagsLinkageException compoundException = new TagsLinkageException();
         for (TagDTO tag : tags) {
             try {
-                newsRepository.linkTag(modelMapper.map(news, News.class), modelMapper.map(tag, Tag.class));
+                function.accept(modelMapper.map(news, News.class), modelMapper.map(tag, Tag.class));
             } catch (Exception e) {
                 compoundException.add(e);
             }
@@ -106,17 +106,12 @@ public class NewsServiceImpl implements NewsService {
     }
 
     @Override
+    public void linkTags(NewsDTO news, List<TagDTO> tags) {
+        processTags(newsRepository::unlinkTag, news, tags);
+    }
+
+    @Override
     public void unlinkTags(NewsDTO news, List<TagDTO> tags) {
-        TagsLinkageException compoundException = new TagsLinkageException();
-        for (TagDTO tag : tags) {
-            try {
-                newsRepository.unlinkTag(modelMapper.map(news, News.class), modelMapper.map(tag, Tag.class));
-            } catch (Exception e) {
-                compoundException.add(e);
-            }
-        }
-        if (!compoundException.getExceptions().isEmpty()) {
-            throw compoundException;
-        }
+        processTags(newsRepository::linkTag, news, tags);
     }
 }
