@@ -29,20 +29,28 @@ public class NewsBySearchCriteriaSpecification implements EntitySpecification {
         this.criteria = criteria;
     }
 
+    private void processAuthorCriteria(StringBuilder sqlBuilder) {
+        Author author = criteria.getAuthor();
+        if (author != null && author.getName() != null) {
+            sqlBuilder.append(MessageFormat.format(SQL_INNER_JOIN_BY_AUTHOR, "'" + author.getName() + "'"));
+        }
+    }
+
+    private void processTagsCriteria(StringBuilder sqlBuilder) {
+        List<Tag> tags = criteria.getTags();
+        if (tags != null) {
+            String tagExpr = tags.stream()
+                    .map(name -> "'" + name.getName() + "'")
+                    .collect(Collectors.joining(", "));
+            sqlBuilder.append(MessageFormat.format(SQL_INNER_JOIN_BY_TAGS, tagExpr, tags.size()));
+        }
+    }
+
     public PreparedStatementCreator specified() {
         return connection -> {
             StringBuilder sql = new StringBuilder(SQL_SELECT_ALL_NEWS);
-            Author author = criteria.getAuthor();
-            if (author != null && author.getName() != null) {
-                sql.append(MessageFormat.format(SQL_INNER_JOIN_BY_AUTHOR, "'" + author.getName() + "'"));
-            }
-            List<Tag> tags = criteria.getTags();
-            if (tags != null) {
-                String tagExpr = tags.stream()
-                        .map(name -> "'" + name.getName() + "'")
-                        .collect(Collectors.joining(", "));
-                sql.append(MessageFormat.format(SQL_INNER_JOIN_BY_TAGS, tagExpr, tags.size()));
-            }
+            processAuthorCriteria(sql);
+            processTagsCriteria(sql);
             PreparedStatement preparedStatement = connection.prepareStatement(sql.toString());
             return preparedStatement;
         };
@@ -52,9 +60,7 @@ public class NewsBySearchCriteriaSpecification implements EntitySpecification {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         NewsBySearchCriteriaSpecification that = (NewsBySearchCriteriaSpecification) o;
-
         return criteria != null ? criteria.equals(that.criteria) : that.criteria == null;
     }
 
