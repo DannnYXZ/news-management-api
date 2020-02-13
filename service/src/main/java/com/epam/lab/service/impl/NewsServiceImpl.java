@@ -74,7 +74,7 @@ public class NewsServiceImpl implements NewsService {
     public List<NewsDTO> readNews(SearchCriteriaDTO criteria) {
         SearchCriteria searchCriteria = modelMapper.map(criteria, SearchCriteria.class);
         List<News> news = newsRepository.query(new NewsBySearchCriteriaSpecification(searchCriteria));
-        SortCriteriaDTO sortCriteriaDTO = criteria.getSortCriteria();
+        SortCriteriaDTO sortCriteriaDTO = criteria.getSort();
         if (sortCriteriaDTO != null) {
             sortByCriteria(news, modelMapper.map(sortCriteriaDTO, SortCriteria.class));
         }

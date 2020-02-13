@@ -5,7 +5,7 @@ import java.util.List;
 public class SearchCriteria {
     private Author author;
     private List<Tag> tags;
-    private SortCriteria sortCriteria;
+    private SortCriteria sort;
 
     public Author getAuthor() {
         return author;
@@ -25,12 +25,12 @@ public class SearchCriteria {
         return this;
     }
 
-    public SortCriteria getSortCriteria() {
-        return sortCriteria;
+    public SortCriteria getSort() {
+        return sort;
     }
 
-    public SearchCriteria setSortCriteria(SortCriteria sortCriteria) {
-        this.sortCriteria = sortCriteria;
+    public SearchCriteria setSort(SortCriteria sort) {
+        this.sort = sort;
         return this;
     }
 
@@ -43,14 +43,14 @@ public class SearchCriteria {
 
         if (author != null ? !author.equals(that.author) : that.author != null) return false;
         if (tags != null ? !tags.equals(that.tags) : that.tags != null) return false;
-        return sortCriteria == that.sortCriteria;
+        return sort == that.sort;
     }
 
     @Override
     public int hashCode() {
         int result = author != null ? author.hashCode() : 0;
         result = 31 * result + (tags != null ? tags.hashCode() : 0);
-        result = 31 * result + (sortCriteria != null ? sortCriteria.hashCode() : 0);
+        result = 31 * result + (sort != null ? sort.hashCode() : 0);
         return result;
     }
 }

@@ -9,7 +9,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.sql.PreparedStatement;
 import java.util.List;
@@ -57,7 +56,7 @@ public class AuthorRepositoryImpl implements EntityRepository<Author> {
 
     @Override
     public long count() {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
     @Override

@@ -55,17 +55,9 @@ public class NewsRepositoryImpl implements NewsRepository {
     @Override
     public News create(News news) {
         News identifiedNews = createIdentifiedNews(news);
-        List<Tag> identifiedTags = createIdentifiedTags(news.getTags());
-        Author identifiedAuthor = authorRepository.create(news.getAuthor());
-        linkTags(identifiedNews, identifiedTags); // TODO: refactoring
-        linkAuthor(identifiedNews, identifiedAuthor);
+        saveTagsForNews(identifiedNews, news.getTags());
+        saveAuthorForNews(identifiedNews, news.getAuthor());
         return news;
-    }
-
-    private void linkTags(News identifiedNews, List<Tag> identifiedTags) {
-        for (Tag identifiedTag : identifiedTags) {
-            linkTag(identifiedNews, identifiedTag);
-        }
     }
 
     private News createIdentifiedNews(News message) {
@@ -87,14 +79,20 @@ public class NewsRepositoryImpl implements NewsRepository {
         return message;
     }
 
-    private List<Tag> createIdentifiedTags(List<Tag> tags) {
-        List<Tag> identifiedTags = new ArrayList<>();
+    private void saveTagsForNews(News identifiedNews, List<Tag> tags) {
         if (tags != null) {
             for (Tag tag : tags) {
-                identifiedTags.add(tagRepository.create(tag));
+                Tag identifiedTag = tagRepository.create(tag);
+                linkTag(identifiedNews, identifiedTag);
             }
         }
-        return identifiedTags;
+    }
+
+    private void saveAuthorForNews(News identifiedNews, Author author) {
+        if (author != null) {
+            Author identifiedAuthor = authorRepository.create(author);
+            linkAuthor(identifiedNews, identifiedAuthor);
+        }
     }
 
     @Override

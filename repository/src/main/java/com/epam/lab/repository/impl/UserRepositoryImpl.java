@@ -7,7 +7,6 @@ import com.epam.lab.specification.EntitySpecification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.List;
 
@@ -47,7 +46,7 @@ public class UserRepositoryImpl implements EntityRepository<User> {
 
     @Override
     public long count() {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 
     @Override

@@ -51,7 +51,7 @@ public class NewsServiceImplTest {
 
     @Test
     public void testReadAllNewsAndSortByAuthor() {
-        SearchCriteria repositoryCriteria = new SearchCriteria().setSortCriteria(SortCriteria.AUTHOR);
+        SearchCriteria repositoryCriteria = new SearchCriteria().setSort(SortCriteria.AUTHOR);
         Mockito.when(newsRepository.query(new NewsBySearchCriteriaSpecification(repositoryCriteria))).thenReturn(Arrays.asList(
                 new News().setAuthor(new Author().setName("D")),
                 new News().setAuthor(new Author().setName("C")),
@@ -59,7 +59,7 @@ public class NewsServiceImplTest {
                 new News().setAuthor(new Author().setName("A"))
         ));
 
-        SearchCriteriaDTO inCriteria = new SearchCriteriaDTO().setSortCriteria(SortCriteriaDTO.AUTHOR);
+        SearchCriteriaDTO inCriteria = new SearchCriteriaDTO().setSort(SortCriteriaDTO.AUTHOR);
         List<NewsDTO> actualNews = newsService.readNews(inCriteria);
         List<NewsDTO> expectedNews = Arrays.asList(
                 new NewsDTO().setAuthor(new AuthorDTO().setName("A")),
