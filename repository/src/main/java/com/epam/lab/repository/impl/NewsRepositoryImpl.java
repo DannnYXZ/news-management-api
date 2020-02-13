@@ -20,6 +20,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -53,34 +54,47 @@ public class NewsRepositoryImpl implements NewsRepository {
 
     @Override
     public News create(News news) {
+        News identifiedNews = createIdentifiedNews(news);
+        List<Tag> identifiedTags = createIdentifiedTags(news.getTags());
+        Author identifiedAuthor = authorRepository.create(news.getAuthor());
+        linkTags(identifiedNews, identifiedTags); // TODO: refactoring
+        linkAuthor(identifiedNews, identifiedAuthor);
+        return news;
+    }
+
+    private void linkTags(News identifiedNews, List<Tag> identifiedTags) {
+        for (Tag identifiedTag : identifiedTags) {
+            linkTag(identifiedNews, identifiedTag);
+        }
+    }
+
+    private News createIdentifiedNews(News message) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         try {
             jdbcTemplate.update(connection -> {
                 PreparedStatement ps = connection.prepareStatement(SQL_INSERT_NEWS, new String[]{"id"});
-                ps.setString(1, news.getTitle());
-                ps.setString(2, news.getShortText());
-                ps.setString(3, news.getFullText());
-                ps.setDate(4, new java.sql.Date(news.getCreationDate().getTime()));
-                ps.setDate(5, new java.sql.Date(news.getModificationDate().getTime()));
+                ps.setString(1, message.getTitle());
+                ps.setString(2, message.getShortText());
+                ps.setString(3, message.getFullText());
+                ps.setDate(4, new java.sql.Date(message.getCreationDate().getTime()));
+                ps.setDate(5, new java.sql.Date(message.getModificationDate().getTime()));
                 return ps;
             }, keyHolder);
-            news.setId(keyHolder.getKey().longValue());
+            message.setId(keyHolder.getKey().longValue());
         } catch (DataIntegrityViolationException e) {
             throw new InsufficientEntityDataException("Not enough data.");
         }
-        List<Tag> tags = news.getTags();
+        return message;
+    }
+
+    private List<Tag> createIdentifiedTags(List<Tag> tags) {
+        List<Tag> identifiedTags = new ArrayList<>();
         if (tags != null) {
             for (Tag tag : tags) {
-                Tag identifiedTag = tagRepository.create(tag);
-                linkTag(news, identifiedTag);
+                identifiedTags.add(tagRepository.create(tag));
             }
         }
-        Author author = news.getAuthor();
-        if (author != null) {
-            Author identifiedAuthor = authorRepository.create(author);
-            linkAuthor(news, identifiedAuthor);
-        }
-        return news;
+        return identifiedTags;
     }
 
     @Override

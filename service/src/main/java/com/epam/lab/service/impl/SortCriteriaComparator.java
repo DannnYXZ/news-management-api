@@ -12,15 +12,18 @@ class SortCriteriaComparator {
 
     static {
         comparators.put(SortCriteria.AUTHOR, (a, b) -> {
-            Author auth1 = a.getAuthor(), auth2 = b.getAuthor();
-            return auth1 == null ? 1 : auth1.compareTo(auth2);
+            Author author1 = a.getAuthor();
+            Author author2 = b.getAuthor();
+            return author1 == null ? 1 : author1.compareTo(author2);
         });
         comparators.put(SortCriteria.TAG, (a, b) -> {
-            List<Tag> tags1 = a.getTags(), tags2 = b.getTags();
+            List<Tag> tags1 = a.getTags();
+            List<Tag> tags2 = b.getTags();
             return tags1 == null ? 1 : tags2 == null ? -1 : tags2.size() - tags1.size();
         });
         comparators.put(SortCriteria.DATE, (a, b) -> {
-            Date date1 = a.getCreationDate(), date2 = b.getCreationDate();
+            Date date1 = a.getCreationDate();
+            Date date2 = b.getCreationDate();
             return date1 == null ? 1 : date1.compareTo(date2);
         });
         comparators.put(null, (a, b) -> 0);
