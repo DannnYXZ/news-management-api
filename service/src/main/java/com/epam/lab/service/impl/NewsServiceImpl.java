@@ -108,11 +108,11 @@ public class NewsServiceImpl implements NewsService {
 
     @Override
     public void linkTags(NewsDTO news, List<TagDTO> tags) {
-        processTags(newsRepository::unlinkTag, news, tags);
+        processTags(newsRepository::linkTag, news, tags);
     }
 
     @Override
     public void unlinkTags(NewsDTO news, List<TagDTO> tags) {
-        processTags(newsRepository::linkTag, news, tags);
+        processTags(newsRepository::unlinkTag, news, tags);
     }
 }

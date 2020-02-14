@@ -3,23 +3,22 @@ package com.epam.lab.service.impl;
 import com.epam.lab.dto.TagDTO;
 import com.epam.lab.exception.EntityNotFoundException;
 import com.epam.lab.model.Tag;
-import com.epam.lab.repository.EntityRepository;
+import com.epam.lab.repository.TagRepository;
 import com.epam.lab.service.TagService;
 import com.epam.lab.specification.impl.TagsByIdSpecification;
+import java.util.List;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 public class TagServiceImpl implements TagService {
 
-    private EntityRepository<Tag> tagRepository;
+    private TagRepository tagRepository;
     private ModelMapper modelMapper;
 
     @Autowired
-    public TagServiceImpl(EntityRepository<Tag> tagRepository) {
+    public TagServiceImpl(TagRepository tagRepository) {
         this.tagRepository = tagRepository;
     }
 

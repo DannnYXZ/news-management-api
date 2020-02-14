@@ -6,12 +6,15 @@ import com.epam.lab.exception.InsufficientEntityDataException;
 import com.epam.lab.model.Author;
 import com.epam.lab.model.News;
 import com.epam.lab.model.Tag;
-import com.epam.lab.repository.EntityRepository;
+import com.epam.lab.repository.AuthorRepository;
 import com.epam.lab.repository.NewsRepository;
+import com.epam.lab.repository.TagRepository;
 import com.epam.lab.specification.EntitySpecification;
 import com.epam.lab.specification.impl.AuthorsByNewsIdSpecification;
 import com.epam.lab.specification.impl.TagsByNewsIdSpecification;
+import java.sql.PreparedStatement;
 import java.util.Date;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DuplicateKeyException;
@@ -20,15 +23,11 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import java.sql.PreparedStatement;
-import java.util.ArrayList;
-import java.util.List;
-
 @Repository
 public class NewsRepositoryImpl implements NewsRepository {
 
-    private EntityRepository<Tag> tagRepository;
-    private EntityRepository<Author> authorRepository;
+    private TagRepository tagRepository;
+    private AuthorRepository authorRepository;
     private JdbcTemplate jdbcTemplate;
     private static final String SQL_INSERT_NEWS = "INSERT INTO news " +
         "(title, short_text, full_text, creation_date, modification_date) VALUES (?, ?, ?, ?, ?)";
@@ -47,8 +46,8 @@ public class NewsRepositoryImpl implements NewsRepository {
 
     @Autowired
     public NewsRepositoryImpl(JdbcTemplate jdbcTemplate,
-        EntityRepository<Tag> tagRepository,
-        EntityRepository<Author> authorRepository) {
+        TagRepository tagRepository,
+        AuthorRepository authorRepository) {
         this.jdbcTemplate = jdbcTemplate;
         this.tagRepository = tagRepository;
         this.authorRepository = authorRepository;

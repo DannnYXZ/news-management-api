@@ -2,19 +2,18 @@ package com.epam.lab.repository.impl;
 
 import com.epam.lab.exception.EntityNotFoundException;
 import com.epam.lab.model.Author;
-import com.epam.lab.repository.EntityRepository;
+import com.epam.lab.repository.AuthorRepository;
 import com.epam.lab.specification.EntitySpecification;
+import java.sql.PreparedStatement;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import java.sql.PreparedStatement;
-import java.util.List;
-
 @Repository
-public class AuthorRepositoryImpl implements EntityRepository<Author> {
+public class AuthorRepositoryImpl implements AuthorRepository {
 
     private JdbcTemplate jdbcTemplate;
     private static final String SQL_INSERT_AUTHOR = "INSERT INTO author (name, surname) VALUES (?, ?)";

@@ -3,19 +3,18 @@ package com.epam.lab.repository.impl;
 
 import com.epam.lab.exception.EntityNotFoundException;
 import com.epam.lab.model.Tag;
-import com.epam.lab.repository.EntityRepository;
+import com.epam.lab.repository.TagRepository;
 import com.epam.lab.specification.EntitySpecification;
+import java.sql.PreparedStatement;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import java.sql.PreparedStatement;
-import java.util.List;
-
 @Repository
-public class TagRepositoryImpl implements EntityRepository<Tag> {
+public class TagRepositoryImpl implements TagRepository {
 
     private JdbcTemplate jdbcTemplate;
     private static final String SQL_INSERT_TAG = "INSERT INTO tag (name) VALUES (?)";

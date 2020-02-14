@@ -1,25 +1,44 @@
 package com.epam.lab.service.impl;
 
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.reset;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import com.epam.lab.configuration.ServiceTestConfiguration;
-import com.epam.lab.dto.*;
+import com.epam.lab.dto.AuthorDTO;
+import com.epam.lab.dto.NewsDTO;
+import com.epam.lab.dto.SearchCriteriaDTO;
+import com.epam.lab.dto.SortCriteriaDTO;
+import com.epam.lab.dto.TagDTO;
 import com.epam.lab.exception.EntityNotFoundException;
 import com.epam.lab.exception.TagsLinkageException;
-import com.epam.lab.model.*;
+import com.epam.lab.model.Author;
+import com.epam.lab.model.News;
+import com.epam.lab.model.SearchCriteria;
+import com.epam.lab.model.SortCriteria;
+import com.epam.lab.model.Tag;
 import com.epam.lab.repository.NewsRepository;
 import com.epam.lab.service.NewsService;
 import com.epam.lab.specification.impl.NewsByIdSpecification;
 import com.epam.lab.specification.impl.NewsBySearchCriteriaSpecification;
-import org.junit.*;
+import java.util.Arrays;
+import java.util.List;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.ClassRule;
+import org.junit.Rule;
+import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.*;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.rules.SpringClassRule;
 import org.springframework.test.context.junit4.rules.SpringMethodRule;
-
-import java.util.Arrays;
-import java.util.List;
 
 @RunWith(MockitoJUnitRunner.class)
 @ContextConfiguration(classes = {ServiceTestConfiguration.class})
@@ -36,14 +55,14 @@ public class NewsServiceImplTest {
 
     @Before
     public void setup() {
-        Mockito.reset(newsRepository);
+        reset(newsRepository);
     }
 
     @Test
-    public void testCreateNewsReturnsIdentified() {
+    public void testCreateNews() {
         long expectedId = 333;
         String title = "Not Identified";
-        Mockito.when(newsRepository.create(Mockito.any(News.class)))
+        when(newsRepository.create(any(News.class)))
             .thenReturn(new News().setId(expectedId));
         NewsDTO inDTO = new NewsDTO().setTitle(title);
         NewsDTO outDTO = newsService.create(inDTO);
@@ -53,7 +72,7 @@ public class NewsServiceImplTest {
     @Test
     public void testReadAllNewsAndSortByAuthor() {
         SearchCriteria repositoryCriteria = new SearchCriteria().setSort(SortCriteria.AUTHOR);
-        Mockito.when(newsRepository.query(new NewsBySearchCriteriaSpecification(repositoryCriteria)))
+        when(newsRepository.query(new NewsBySearchCriteriaSpecification(repositoryCriteria)))
             .thenReturn(Arrays.asList(
                 new News().setAuthor(new Author().setName("D")),
                 new News().setAuthor(new Author().setName("C")),
@@ -74,7 +93,7 @@ public class NewsServiceImplTest {
 
     @Test
     public void testReadNewsById() {
-        Mockito.when(newsRepository.query(new NewsByIdSpecification(35))).thenReturn(
+        when(newsRepository.query(new NewsByIdSpecification(35))).thenReturn(
             Arrays.asList(new News()
                 .setId(35)
                 .setAuthor(new Author().setName("Bazinga"))
@@ -94,16 +113,16 @@ public class NewsServiceImplTest {
         String targetTitle = "News to be deleted.";
         NewsDTO inDTO = new NewsDTO().setId(targetId).setTitle(targetTitle);
         newsService.delete(inDTO);
-        Mockito.verify(newsRepository, Mockito.times(1))
+        verify(newsRepository, times(1))
             .delete(new News().setId(targetId).setTitle(targetTitle));
     }
 
     @Test
     public void testCountNews() {
         long expectedCount = 909L;
-        Mockito.when(newsRepository.count()).thenReturn(expectedCount);
+        when(newsRepository.count()).thenReturn(expectedCount);
         Assert.assertEquals(newsService.countNews(), expectedCount);
-        Mockito.verify(newsRepository).count();
+        verify(newsRepository).count();
     }
 
 
@@ -124,7 +143,7 @@ public class NewsServiceImplTest {
             new TagDTO().setId(454)
         );
         newsService.linkTags(inNewsDTO, tagsDTO);
-        Mockito.verify(newsRepository, Mockito.times(4)).linkTag(newsCaptor.capture(), tagsCaptor.capture());
+        verify(newsRepository, times(4)).linkTag(newsCaptor.capture(), tagsCaptor.capture());
     }
 
     @Test
@@ -137,7 +156,7 @@ public class NewsServiceImplTest {
             new TagDTO().setId(454)
         );
         newsService.unlinkTags(inNewsDTO, tagsDTO);
-        Mockito.verify(newsRepository, Mockito.times(4))
+        verify(newsRepository, times(4))
             .unlinkTag(newsCaptor.capture(), tagsCaptor.capture());
     }
 
@@ -150,7 +169,7 @@ public class NewsServiceImplTest {
             new TagDTO().setId(343),
             new TagDTO().setId(454)
         );
-        Mockito.doThrow(EntityNotFoundException.class)
+        doThrow(EntityNotFoundException.class)
             .when(newsRepository)
             .unlinkTag(new News().setId(777), new Tag().setId(232));
         newsService.unlinkTags(inNewsDTO, inTagsDTO);
@@ -162,7 +181,7 @@ public class NewsServiceImplTest {
         AuthorDTO inAuthorDTO = new AuthorDTO().setId(33);
 
         newsService.linkAuthor(inNewsDTO, inAuthorDTO);
-        Mockito.verify(newsRepository, Mockito.times(1))
+        verify(newsRepository, times(1))
             .linkAuthor(newsCaptor.capture(), authorCaptor.capture());
     }
 
@@ -172,7 +191,7 @@ public class NewsServiceImplTest {
         AuthorDTO inAuthorDTO = new AuthorDTO().setId(33);
 
         newsService.unlinkAuthor(inNewsDTO, inAuthorDTO);
-        Mockito.verify(newsRepository, Mockito.times(1))
+        verify(newsRepository, times(1))
             .unlinkAuthor(newsCaptor.capture(), authorCaptor.capture());
     }
 }
