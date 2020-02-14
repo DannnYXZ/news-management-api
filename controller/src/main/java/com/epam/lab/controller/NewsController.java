@@ -5,8 +5,11 @@ import com.epam.lab.dto.NewsDTO;
 import com.epam.lab.dto.SearchCriteriaDTO;
 import com.epam.lab.dto.TagDTO;
 import com.epam.lab.service.NewsService;
+import com.epam.lab.validation.NewEntity;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,25 +27,22 @@ public class NewsController {
 
     @ResponseStatus(code = HttpStatus.CREATED)
     @PostMapping(value = "/news")
-    public NewsDTO createNews(@RequestBody NewsDTO news) {
-        NewsDTO identifiedNews = newsService.create(news);
-        return identifiedNews;
+    public NewsDTO createNews(@Validated(NewEntity.class) @RequestBody NewsDTO news) {
+        return newsService.create(news);
     }
 
     @GetMapping(value = "/news")
     public List<NewsDTO> readNews(SearchCriteriaDTO searchCriteriaDTO) {
-        List<NewsDTO> news = newsService.readNews(searchCriteriaDTO);
-        return news;
+        return newsService.readNews(searchCriteriaDTO);
     }
 
     @GetMapping(value = "/news/{id}")
     public NewsDTO readNews(@PathVariable("id") Long id) {
-        NewsDTO news = newsService.read(new NewsDTO().setId(id));
-        return news;
+        return newsService.read(new NewsDTO().setId(id));
     }
 
     @PutMapping(value = "/news/{id}")
-    public void updateNews(@PathVariable("id") Long id, @RequestBody NewsDTO news) {
+    public void updateNews(@PathVariable("id") Long id, @Valid @RequestBody NewsDTO news) {
         newsService.update(news.setId(id));
     }
 

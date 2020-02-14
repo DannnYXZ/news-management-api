@@ -11,6 +11,7 @@ import com.epam.lab.repository.NewsRepository;
 import com.epam.lab.specification.EntitySpecification;
 import com.epam.lab.specification.impl.AuthorsByNewsIdSpecification;
 import com.epam.lab.specification.impl.TagsByNewsIdSpecification;
+import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DuplicateKeyException;
@@ -103,7 +104,7 @@ public class NewsRepositoryImpl implements NewsRepository {
             news.getShortText(),
             news.getFullText(),
             news.getCreationDate(),
-            news.getModificationDate(),
+            new Date(),
             news.getId()))) {
             throw new EntityNotFoundException("No such news.");
         }

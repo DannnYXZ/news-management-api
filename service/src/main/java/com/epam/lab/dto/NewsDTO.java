@@ -1,15 +1,23 @@
 package com.epam.lab.dto;
 
+import com.epam.lab.validation.NewEntity;
 import com.fasterxml.jackson.annotation.JsonFormat;
-
 import java.util.Date;
 import java.util.List;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 public class NewsDTO {
 
     private long id;
+    @Size(max = 200, message = "title must not be longer than 200 characters")
+    @NotEmpty(groups = NewEntity.class, message = "title must not be empty")
     private String title;
+    @Size(max = 500, message = "shortText must not be longer than 500 characters")
+    @NotEmpty(groups = NewEntity.class, message = "shortText must not be empty")
     private String shortText;
+    @Size(max = 2000, message = "fullText must not be longer than 2000 characters")
+    @NotEmpty(groups = NewEntity.class, message = "fullText must not be empty")
     private String fullText;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
     private Date creationDate;

@@ -2,8 +2,12 @@ package com.epam.lab.controller;
 
 import com.epam.lab.dto.TagDTO;
 import com.epam.lab.service.TagService;
+import com.epam.lab.validation.NewEntity;
+import javax.validation.Valid;
+import javax.validation.constraints.Max;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,9 +22,8 @@ public class TagController {
 
     @ResponseStatus(code = HttpStatus.CREATED)
     @PostMapping(value = "/tags")
-    public TagDTO createTag(@RequestBody TagDTO tag) {
-        TagDTO identifiedTag = tagService.create(tag);
-        return identifiedTag;
+    public TagDTO createTag(@Validated(NewEntity.class) @RequestBody TagDTO tag) {
+        return tagService.create(tag);
     }
 
     @GetMapping(value = "/tags/{id}")
@@ -29,7 +32,7 @@ public class TagController {
     }
 
     @PutMapping(value = "/tags/{id}")
-    public void updateTag(@PathVariable("id") Long id, @RequestBody TagDTO tag) {
+    public void updateTag(@PathVariable("id") Long id, @Valid @RequestBody TagDTO tag) {
         tagService.update(tag.setId(id));
     }
 

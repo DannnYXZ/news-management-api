@@ -1,9 +1,14 @@
 package com.epam.lab.exception;
 
 import com.epam.lab.dto.ApiErrorDTO;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Collectors;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.ServletWebRequest;
@@ -11,11 +16,6 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @ControllerAdvice
 class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
@@ -69,6 +69,17 @@ class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler 
     @ExceptionHandler({Exception.class})
     public ResponseEntity<Object> handleAll(Exception ex, WebRequest request) {
         ApiErrorDTO apiError = new ApiErrorDTO(HttpStatus.INTERNAL_SERVER_ERROR, null, "Internal Server Error");
+        return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getStatus());
+    }
+
+    @Override
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
+        HttpHeaders headers, HttpStatus status, WebRequest request) {
+        ApiErrorDTO apiError = new ApiErrorDTO(HttpStatus.BAD_REQUEST, "Entity constraints conflict.",
+            new ArrayList<>());
+        ex.getBindingResult().getAllErrors().forEach(error -> {
+            apiError.getErrors().add(error.getDefaultMessage());
+        });
         return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getStatus());
     }
 }

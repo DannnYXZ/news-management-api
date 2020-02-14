@@ -1,8 +1,14 @@
 package com.epam.lab.dto;
 
+import com.epam.lab.validation.NewEntity;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
+
 public class TagDTO {
 
     private long id;
+    @Size(max = 30, message = "name must not be longer than 30 characters")
+    @NotEmpty(groups = NewEntity.class, message = "name must not be empty")
     private String name;
 
     public TagDTO() {
