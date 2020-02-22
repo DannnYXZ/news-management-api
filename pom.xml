@@ -12,6 +12,7 @@
         <module>controller</module>
         <module>service</module>
         <module>repository</module>
+        <module>repository-jpa</module>
     </modules>
     <build>
         <plugins>
