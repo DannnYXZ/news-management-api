@@ -7,11 +7,13 @@ import com.epam.lab.repository.TagRepository;
 import com.epam.lab.service.TagService;
 import com.epam.lab.specification.impl.TagsByIdSpecification;
 import java.util.List;
+import javax.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
+@Transactional
 public class TagServiceImpl implements TagService {
 
     private TagRepository tagRepository;

@@ -1,23 +1,25 @@
 package com.epam.lab.specification.impl;
 
+import com.epam.lab.model.Tag;
 import com.epam.lab.specification.EntitySpecification;
-import java.sql.PreparedStatement;
-import org.springframework.jdbc.core.PreparedStatementCreator;
+import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
-public class TagsByIdSpecification implements EntitySpecification {
+public class TagsByIdSpecification implements EntitySpecification<Tag> {
 
-    private static final String SQL_SELECT_TAG = "SELECT * FROM tag WHERE id = ?";
     private long id;
 
     public TagsByIdSpecification(long id) {
         this.id = id;
     }
 
-    public PreparedStatementCreator specified() {
-        return connection -> {
-            PreparedStatement preparedStatement = connection.prepareStatement(SQL_SELECT_TAG);
-            preparedStatement.setLong(1, id);
-            return preparedStatement;
-        };
+    public CriteriaQuery<Tag> specified(EntityManager manager) {
+        CriteriaBuilder criteriaBuilder = manager.getCriteriaBuilder();
+        CriteriaQuery<Tag> query = criteriaBuilder.createQuery(Tag.class);
+        Root<Tag> model = query.from(Tag.class);
+        query.where(criteriaBuilder.equal(model.get("id"), this.id));
+        return query;
     }
 }

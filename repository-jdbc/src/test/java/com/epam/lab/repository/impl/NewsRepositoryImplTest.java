@@ -8,7 +8,7 @@ import com.epam.lab.model.Author;
 import com.epam.lab.model.News;
 import com.epam.lab.model.Tag;
 import com.epam.lab.repository.NewsRepository;
-import com.epam.lab.repository.configuration.RepositoryTestConfig;
+import com.epam.lab.configuration.RepositoryTestConfig;
 import com.epam.lab.specification.impl.NewsByIdSpecification;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;

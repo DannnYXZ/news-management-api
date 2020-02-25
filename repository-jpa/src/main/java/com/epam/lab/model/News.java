@@ -13,6 +13,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
 
 @Entity
@@ -29,8 +31,10 @@ public class News {
     @Column(name = "full_text", nullable = false, length = 2000)
     private String fullText;
     @Column(name = "creation_date", nullable = false)
+    @Temporal(TemporalType.DATE)
     private Date creationDate;
     @Column(name = "modification_date", nullable = false)
+    @Temporal(TemporalType.DATE)
     private Date modificationDate;
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinTable(

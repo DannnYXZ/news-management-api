@@ -1,8 +1,9 @@
 package com.epam.lab.specification;
 
-import org.springframework.jdbc.core.PreparedStatementCreator;
+import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaQuery;
 
-public interface EntitySpecification {
+public interface EntitySpecification<T> {
 
-    PreparedStatementCreator specified();
+    CriteriaQuery<T> specified(EntityManager manager);
 }

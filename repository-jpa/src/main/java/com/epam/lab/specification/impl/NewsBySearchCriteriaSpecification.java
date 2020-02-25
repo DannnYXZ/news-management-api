@@ -1,58 +1,49 @@
 package com.epam.lab.specification.impl;
 
 import com.epam.lab.model.Author;
+import com.epam.lab.model.News;
 import com.epam.lab.model.SearchCriteria;
 import com.epam.lab.model.Tag;
 import com.epam.lab.specification.EntitySpecification;
-import java.sql.PreparedStatement;
-import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-import org.springframework.jdbc.core.PreparedStatementCreator;
+import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaBuilder.In;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 
-public class NewsBySearchCriteriaSpecification implements EntitySpecification {
+public class NewsBySearchCriteriaSpecification implements EntitySpecification<News> {
 
-    private static final String SQL_SELECT_ALL_NEWS =
-        "SELECT n.id, n.title, n.short_text, n.full_text, n.creation_date, n.modification_date FROM news as n ";
-    private static final String SQL_INNER_JOIN_BY_AUTHOR =
-        "INNER JOIN news_author ON n.id = news_author.news_id " +
-            "INNER JOIN author ON author.id = news_author.author_id AND author.name = {0} ";
-    private static final String SQL_INNER_JOIN_BY_TAGS =
-        "INNER JOIN news_tag nt ON n.id = nt.news_id " +
-            "INNER JOIN tag tg ON tg.id = nt.tag_id " +
-            "WHERE tg.name IN ({0}) " +
-            "group by n.id having count(*)={1} ";
     private SearchCriteria criteria;
 
     public NewsBySearchCriteriaSpecification(SearchCriteria criteria) {
         this.criteria = criteria;
     }
 
-    private void processAuthorCriteria(StringBuilder sqlBuilder) {
-        Author author = criteria.getAuthor();
-        if (author != null && author.getName() != null) {
-            sqlBuilder.append(MessageFormat.format(SQL_INNER_JOIN_BY_AUTHOR, "'" + author.getName() + "'"));
+    public CriteriaQuery<News> specified(EntityManager manager) {
+        CriteriaBuilder criteriaBuilder = manager.getCriteriaBuilder();
+        CriteriaQuery<News> query = criteriaBuilder.createQuery(News.class);
+        Root<News> root = query.from(News.class);
+        List<Predicate> conditions = new ArrayList<>();
+        if (this.criteria.getAuthor() != null) {
+            Join<News, Author> authorsJoin = root.join("author");
+            Predicate hasName = criteriaBuilder.equal(authorsJoin.get("name"), criteria.getAuthor().getName());
+            conditions.add(hasName);
         }
-    }
-
-    private void processTagsCriteria(StringBuilder sqlBuilder) {
-        List<Tag> tags = criteria.getTags();
-        if (tags != null) {
-            String tagExpr = tags.stream()
-                .map(name -> "'" + name.getName() + "'")
-                .collect(Collectors.joining(", "));
-            sqlBuilder.append(MessageFormat.format(SQL_INNER_JOIN_BY_TAGS, tagExpr, tags.size()));
+        if (this.criteria.getTags() != null) {
+            Join<News, Tag> tagsJoin = root.join("tags");
+            In<String> inClause = criteriaBuilder.in(tagsJoin.get("name"));
+            for (Tag tag : criteria.getTags()) {
+                inClause.value(tag.getName());
+            }
+            conditions.add(inClause);
+            Predicate count = criteriaBuilder.equal(criteriaBuilder.count(root), criteria.getTags().size());
+            query.groupBy(root, root.get("author")).having(count);
         }
-    }
-
-    public PreparedStatementCreator specified() {
-        return connection -> {
-            StringBuilder sql = new StringBuilder(SQL_SELECT_ALL_NEWS);
-            processAuthorCriteria(sql);
-            processTagsCriteria(sql);
-            PreparedStatement preparedStatement = connection.prepareStatement(sql.toString());
-            return preparedStatement;
-        };
+        return query.select(root).where(conditions.toArray(new Predicate[]{}));
     }
 
     @Override

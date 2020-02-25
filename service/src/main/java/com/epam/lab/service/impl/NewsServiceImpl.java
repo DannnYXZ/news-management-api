@@ -8,6 +8,7 @@ import com.epam.lab.repository.NewsRepository;
 import com.epam.lab.service.NewsService;
 import com.epam.lab.specification.impl.NewsByIdSpecification;
 import com.epam.lab.specification.impl.NewsBySearchCriteriaSpecification;
+import javax.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,7 @@ import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class NewsServiceImpl implements NewsService {
 
     private NewsRepository newsRepository;

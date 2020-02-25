@@ -1,23 +1,25 @@
 package com.epam.lab.specification.impl;
 
+import com.epam.lab.model.Author;
 import com.epam.lab.specification.EntitySpecification;
-import java.sql.PreparedStatement;
-import org.springframework.jdbc.core.PreparedStatementCreator;
+import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
-public class AuthorsByIdSpecification implements EntitySpecification {
+public class AuthorsByIdSpecification implements EntitySpecification<Author> {
 
-    private static final String SQL_SELECT_AUTHOR = "SELECT * FROM author WHERE id = ?";
     private long id;
 
     public AuthorsByIdSpecification(long id) {
         this.id = id;
     }
 
-    public PreparedStatementCreator specified() {
-        return connection -> {
-            PreparedStatement preparedStatement = connection.prepareStatement(SQL_SELECT_AUTHOR);
-            preparedStatement.setLong(1, id);
-            return preparedStatement;
-        };
+    public CriteriaQuery<Author> specified(EntityManager manager) {
+        CriteriaBuilder criteriaBuilder = manager.getCriteriaBuilder();
+        CriteriaQuery<Author> query = criteriaBuilder.createQuery(Author.class);
+        Root<Author> model = query.from(Author.class);
+        query.where(criteriaBuilder.equal(model.get("id"), this.id));
+        return query;
     }
 }

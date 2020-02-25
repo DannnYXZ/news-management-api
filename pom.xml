@@ -11,7 +11,7 @@
     <modules>
         <module>controller</module>
         <module>service</module>
-        <module>repository</module>
+        <module>repository-jdbc</module>
         <module>repository-jpa</module>
     </modules>
     <build>
@@ -19,10 +19,10 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
+                <com.epam.lab.configuration>
                     <source>1.8</source>
                     <target>1.8</target>
-                </configuration>
+                </com.epam.lab.configuration>
             </plugin>
         </plugins>
     </build>

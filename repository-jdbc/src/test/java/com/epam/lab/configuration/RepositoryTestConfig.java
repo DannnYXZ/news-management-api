@@ -1,4 +1,4 @@
-package com.epam.lab.repository.configuration;
+package com.epam.lab.configuration;
 
 import com.opentable.db.postgres.embedded.EmbeddedPostgres;
 import org.flywaydb.core.Flyway;

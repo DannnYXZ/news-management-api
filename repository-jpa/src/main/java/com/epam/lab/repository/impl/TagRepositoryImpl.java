@@ -1,54 +1,42 @@
 package com.epam.lab.repository.impl;
 
 
-import com.epam.lab.exception.EntityNotFoundException;
 import com.epam.lab.model.Tag;
 import com.epam.lab.repository.TagRepository;
 import com.epam.lab.specification.EntitySpecification;
-import java.sql.PreparedStatement;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityNotFoundException;
+import javax.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class TagRepositoryImpl implements TagRepository {
 
-    private JdbcTemplate jdbcTemplate;
-    private static final String SQL_INSERT_TAG = "INSERT INTO tag (name) VALUES (?)";
-    private static final String SQL_UPDATE_TAG = "UPDATE tag SET name = coalesce(?, name) WHERE id = ?";
-    private static final String SQL_REMOVE_TAG = "DELETE FROM tag WHERE id = ?";
-
-    @Autowired
-    public TagRepositoryImpl(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
+    @PersistenceContext
+    private EntityManager entityManager;
 
     public Tag create(Tag tag) {
-        KeyHolder keyHolder = new GeneratedKeyHolder();
-        jdbcTemplate.update(connection -> {
-            PreparedStatement ps = connection.prepareStatement(SQL_INSERT_TAG, new String[]{"id"});
-            ps.setString(1, tag.getName());
-            return ps;
-        }, keyHolder);
-        tag.setId(keyHolder.getKey().longValue());
+        entityManager.persist(tag);
         return tag;
     }
 
     @Override
     public void update(Tag tag) {
-        if (isNotUpdated(jdbcTemplate.update(SQL_UPDATE_TAG, tag.getName(), tag.getId()))) {
+        Tag storedTag = entityManager.find(Tag.class, tag.getId());
+        if (storedTag == null) {
             throw new EntityNotFoundException("No such tag.");
         }
+        ObjectPatcher.patch(storedTag, tag);
     }
 
     @Override
     public void delete(Tag tag) {
-        if (isNotUpdated(jdbcTemplate.update(SQL_REMOVE_TAG, tag.getId()))) {
+        Tag storedTag = entityManager.find(Tag.class, tag.getId());
+        if (storedTag == null) {
             throw new EntityNotFoundException("No such tag.");
         }
+        entityManager.remove(storedTag);
     }
 
     @Override
@@ -57,11 +45,7 @@ public class TagRepositoryImpl implements TagRepository {
     }
 
     @Override
-    public List<Tag> query(EntitySpecification specification) {
-        List<Tag> tags = jdbcTemplate.query(specification.specified(),
-            (rs, rowNum) -> new Tag()
-                .setId(rs.getInt("id"))
-                .setName(rs.getString("name")));
-        return tags;
+    public List<Tag> query(EntitySpecification<Tag> specification) {
+        return entityManager.createQuery(specification.specified(entityManager)).getResultList();
     }
 }

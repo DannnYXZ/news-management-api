@@ -179,7 +179,6 @@ public class NewsServiceImplTest {
     public void testLinkAuthor() {
         NewsDTO inNewsDTO = new NewsDTO().setId(7788);
         AuthorDTO inAuthorDTO = new AuthorDTO().setId(33);
-
         newsService.linkAuthor(inNewsDTO, inAuthorDTO);
         verify(newsRepository, times(1))
             .linkAuthor(newsCaptor.capture(), authorCaptor.capture());
@@ -189,7 +188,6 @@ public class NewsServiceImplTest {
     public void testUnlinkAuthor() {
         NewsDTO inNewsDTO = new NewsDTO().setId(7788);
         AuthorDTO inAuthorDTO = new AuthorDTO().setId(33);
-
         newsService.unlinkAuthor(inNewsDTO, inAuthorDTO);
         verify(newsRepository, times(1))
             .unlinkAuthor(newsCaptor.capture(), authorCaptor.capture());

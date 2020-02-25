@@ -6,6 +6,7 @@ import com.epam.lab.model.Author;
 import com.epam.lab.repository.EntityRepository;
 import com.epam.lab.service.AuthorService;
 import com.epam.lab.specification.impl.AuthorsByIdSpecification;
+import javax.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
+@Transactional
 public class AuthorServiceImpl implements AuthorService {
 
     private EntityRepository<Author> authorRepository;

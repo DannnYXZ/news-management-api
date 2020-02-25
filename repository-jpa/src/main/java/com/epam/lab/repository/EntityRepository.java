@@ -13,7 +13,7 @@ public interface EntityRepository<T> {
 
     long count();
 
-    List<T> query(EntitySpecification specification);
+     List<T> query(EntitySpecification<T> specification);
 
     default boolean isNotUpdated(int updates) {
         return updates == 0;
