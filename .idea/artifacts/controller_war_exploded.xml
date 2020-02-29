@@ -1,0 +1,57 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="controller:war exploded">
+    <output-path>$PROJECT_DIR$/controller/target/controller-1.0-SNAPSHOT</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <exploded>true</exploded>
+        <module>controller</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="root">
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="controller" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="archive" name="service-1.0-SNAPSHOT.jar">
+            <element id="module-output" name="service" />
+          </element>
+          <element id="archive" name="repository-1.0-SNAPSHOT.jar">
+            <element id="module-output" name="repository" />
+          </element>
+          <element id="library" level="project" name="Maven: com.zaxxer:HikariCP:3.4.2" />
+          <element id="library" level="project" name="Maven: org.postgresql:postgresql:42.2.9" />
+          <element id="library" level="project" name="Maven: org.flywaydb:flyway-core:5.0.2" />
+          <element id="library" level="project" name="Maven: org.modelmapper:modelmapper:2.3.0" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-context:5.2.2.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-aop:5.2.2.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-beans:5.2.2.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-core:5.2.2.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-jcl:5.2.2.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-expression:5.2.2.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-context-support:5.2.2.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-tx:5.2.2.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-jdbc:5.2.2.RELEASE" />
+          <element id="library" level="project" name="Maven: org.apache.logging.log4j:log4j-api:2.11.2" />
+          <element id="library" level="project" name="Maven: org.apache.logging.log4j:log4j-core:2.11.2" />
+          <element id="library" level="project" name="Maven: org.slf4j:slf4j-api:2.0.0-alpha1" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-webmvc:5.2.2.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-web:5.2.2.RELEASE" />
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.10.2" />
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.10.2" />
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-core:2.10.2" />
+          <element id="library" level="project" name="Maven: org.mockito:mockito-core:2.21.0" />
+          <element id="library" level="project" name="Maven: net.bytebuddy:byte-buddy:1.8.15" />
+          <element id="library" level="project" name="Maven: net.bytebuddy:byte-buddy-agent:1.8.15" />
+          <element id="library" level="project" name="Maven: org.objenesis:objenesis:2.6" />
+          <element id="library" level="project" name="Maven: javax.validation:validation-api:2.0.1.Final" />
+        </element>
+      </element>
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/controller/target/controller-1.0-SNAPSHOT/META-INF/MANIFEST.MF" />
+      </element>
+      <element id="javaee-facet-resources" facet="controller/web/Web" />
+    </root>
+  </artifact>
+</component>
